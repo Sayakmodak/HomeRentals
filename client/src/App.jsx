@@ -1,14 +1,61 @@
-import { useState } from 'react'
 import './App.css'
-import { Button } from './components/ui/button'
+import{
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
+import Signup from './pages/Signup'
+import Layout from './mainLayout/Layout';
+import Hero from './comp/Hero';
+import Contact from './pages/Contact';
+
+/*
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Layout/>,
+    children: [
+      {
+        path: "/",
+        index: true,
+        element: <Hero/> 
+      },
+      {
+        path: "/login",
+        element: <Signup/> 
+      }
+    ]
+  },
+])*/
+
+
+const router = createBrowserRouter([
+  {
+    path: "/login",
+    element: <Signup/> 
+  },
+  {
+    path: "/",
+    element: <Layout/>,
+    children: [
+      {
+        path: "/",
+        index: true,
+        element: <Hero/> 
+      },
+      {
+        path: "/contact",
+        element: <Contact/> 
+      },
+    ]
+  }
+]);
+
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
-    <Button variant={"outline"}>Hello</Button>
-    <Button>Hi</Button>
+    <RouterProvider router={router} />
     </>
   )
 }
