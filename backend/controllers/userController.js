@@ -1,6 +1,7 @@
 import { User } from './../models/user.model.js';
 import bcrypt from "bcrypt";
 import jwt from 'jsonwebtoken';
+import { deleteImageFromCloudinary, uploadMedia } from '../Utils/cloudinary.js';
 
 export const register = async (req, res) =>{
     try {
@@ -108,6 +109,70 @@ export const logout = async (req, res)=>{
         res.status(500).json({
             success: false,
             message: "failed to logout"
+        })
+    }
+}
+
+export const getUserProfile = async (req, res) =>{
+    try {
+        const userId = req.id;
+
+        const user = await User.findById(userId).select("-password");
+        if(!user){
+            return res.status(404).json({
+                success: false,
+                message: "failed to get user profile"
+            })
+        }
+
+        return res.status(200).json({
+                success: true,
+                message: "successfully get user profile",
+                user: user
+        })
+
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "error occured while getting user profile"
+        })
+    }
+}
+
+export const updateUserProfile = async (req, res) =>{
+    try {
+        const userId = req.id;
+        const {name} = req.body;
+        const userImg = req.file;
+
+        const user = await User.findById(userId);
+        if(!user){
+            return res.status(404).json({
+                success: false,
+                message: "failed to get user profile"
+            })
+        }
+
+        if(user.profileImg){
+            const image = user.profileImg;
+            const publicId = image.split("/").pop().split(".")[0];
+            await deleteImageFromCloudinary(publicId);
+        }        
+
+        const cloudResponse = await uploadMedia(userImg.path);
+        const profileUrl = cloudResponse.secure_url;
+
+        const updatedData = {name, profileImg: profileUrl};
+        const updatedUser = await User.findByIdAndUpdate(userId, updatedData, {new: true}).select("-password");
+
+        return res.status(200).json({
+            success: true,
+            message: "User updated successfully", updatedUser
+        })
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "failed to update user profile"
         })
     }
 }
