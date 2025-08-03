@@ -5,8 +5,8 @@ import{
 } from "react-router-dom";
 import Signup from './pages/Signup'
 import Layout from './mainLayout/Layout';
-import Hero from './comp/Hero';
 import Contact from './pages/Contact';
+import HomePage from './comp/HomePage';
 
 /*
 const router = createBrowserRouter([
@@ -40,12 +40,12 @@ const router = createBrowserRouter([
       {
         path: "/",
         index: true,
-        element: <Hero/> 
+        element: <HomePage/> 
       },
-      {
-        path: "/contact",
-        element: <Contact/> 
-      },
+      // {
+      //   path: "/contact",
+      //   element: <Contact/> 
+      // },
     ]
   }
 ]);

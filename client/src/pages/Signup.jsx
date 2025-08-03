@@ -18,7 +18,6 @@ import {
 } from "@/components/ui/tabs"
 import { HomeIcon, Sidebar } from 'lucide-react'
 
-
 const Signup = () => {
   const [signUpData, setSignUpData] = useState({
     name: '',
@@ -32,42 +31,18 @@ const Signup = () => {
     password: ''
   });
 
-
-  const onSignUpValueChange = (e) => {
-    const { name, value } = e.target;
-    setSignUpData((prev) => ({ ...prev, [name]: value }));
-  }
-
-  const handleSignUpSubmit = (e) => {
-    e.preventDefault();
-    console.log(signUpData);
-  }
-
-
-  const onLoginValueChange = (e) => {
-  const { name, value } = e.target;
-  setLoginData((prev) => ({ ...prev, [name]: value }));
-  }
-
-  const handleOnValueChange = (e, type) =>{
-    // e.preventDefault();
-    if(type === "login"){
-      const {name, value} = e.target;
-      setLoginData((prev) => ({...prev, [name]: value}));
+const handleOnValueChange = (e, type) => {
+    if (type === "login") {
+      const { name, value } = e.target;
+      setLoginData((prev) => ({ ...prev, [name]: value }));
     }
-    else{
-      const {name, value} = e.target;
-      setSignUpData((prev) => ({...prev, [name]: value}));
+    else {
+      const { name, value } = e.target;
+      setSignUpData((prev) => ({ ...prev, [name]: value }));
     }
-  } 
+  }
 
-  // const handleLoginSubmit = (e)=>{
-  //   e.preventDefault();
-  //   console.log(loginData);
-  // }
-
-
-  const handleOnSubmit = (type) => {
+const handleOnSubmit = (type) => {
     if (type === "login") {
       console.log(loginData);
     }
@@ -98,11 +73,11 @@ const Signup = () => {
                 <CardContent className="grid gap-3">
                   <div className="grid gap-3">
                     <Label htmlFor="name">Name</Label>
-                    <Input id="name" type="text" name="name" value={signUpData.name} onChange={(e)=>handleOnValueChange(e, "signup")} />
+                    <Input id="name" type="text" name="name" value={signUpData.name} onChange={(e) => handleOnValueChange(e, "signup")} />
                   </div>
                   <div className="grid gap-3">
                     <Label htmlFor="email">Email</Label>
-                    <Input id="email" type="email" name="email" value={signUpData.email} onChange={(e)=>handleOnValueChange(e, "signup")} />
+                    <Input id="email" type="email" name="email" value={signUpData.email} onChange={(e) => handleOnValueChange(e, "signup")} />
                   </div>
 
                   <div className="flex gap-2 items-center justify-between">
@@ -110,12 +85,12 @@ const Signup = () => {
                       <Label htmlFor="tabs-demo-username">Are you a: </Label>
                       <div className='flex ml-3 gap-2'>
                         <div className='flex gap-1'>
-                          <input id="customer" type="radio" name='role' checked={signUpData.role == "customer"} value="customer" onChange={(e)=>handleOnValueChange(e, "signup")} />
+                          <input id="customer" type="radio" name='role' checked={signUpData.role == "customer"} value="customer" onChange={(e) => handleOnValueChange(e, "signup")} />
                           <Label htmlFor="customer">Customer</Label>
                         </div>
 
                         <div className='flex gap-1'>
-                          <input id="seller" type="radio" name='role' checked={signUpData.role == "seller"} value="seller" onChange={(e)=>handleOnValueChange(e, "signup")} />
+                          <input id="seller" type="radio" name='role' checked={signUpData.role == "seller"} value="seller" onChange={(e) => handleOnValueChange(e, "signup")} />
                           <Label htmlFor="seller">Seller</Label>
                         </div>
                       </div>
@@ -125,7 +100,7 @@ const Signup = () => {
 
                   <div className="grid gap-3">
                     <Label htmlFor="password">Password</Label>
-                    <Input id="password" type="password" name="password" value={signUpData.password} onChange={(e)=>handleOnValueChange(e, "signup")} />
+                    <Input id="password" type="password" name="password" value={signUpData.password} onChange={(e) => handleOnValueChange(e, "signup")} />
                   </div>
 
                 </CardContent>
@@ -149,11 +124,11 @@ const Signup = () => {
                 <CardContent className="grid gap-6">
                   <div className="grid gap-3">
                     <Label htmlFor="tabs-demo-current">Email</Label>
-                    <Input id="tabs-demo-current" type="email" name="email" value={loginData.email} onChange={(e)=>handleOnValueChange(e, "login")} />
+                    <Input id="tabs-demo-current" type="email" name="email" value={loginData.email} onChange={(e) => handleOnValueChange(e, "login")} />
                   </div>
                   <div className="grid gap-3">
                     <Label htmlFor="tabs-demo-new">Password</Label>
-                    <Input id="tabs-demo-new" type="password" name="password" value={loginData.password} onChange={(e)=>handleOnValueChange(e, "login")} />
+                    <Input id="tabs-demo-new" type="password" name="password" value={loginData.password} onChange={(e) => handleOnValueChange(e, "login")} />
                   </div>
                 </CardContent>
                 <CardFooter>

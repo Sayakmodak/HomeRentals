@@ -24,16 +24,16 @@ const Navbar = () => {
   const user = "seller";
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 bg-transparent border border-red-600">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
+    <nav className="fixed top-0 left-0 w-full z-50 bg-transparent border-red-600">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16 mb-20">
         <div className='flex justify-center items-center'>
-          <HomeIcon />
-          <h2>HomeRentals</h2>
+          <HomeIcon className='text-white'/>
+          <h2 className='text-white'>HomeRentals</h2>
         </div>
         <div className="flex gap-10">
-          <Link to="/" className="text-black text-lg font-semibold hover:text-gray-300">Home</Link>
-          <Link to="" className="text-black text-lg font-semibold hover:text-gray-300">Hotels</Link>
-          <Link to="" className="text-black text-lg font-semibold hover:text-gray-300">About</Link>
+          <Link to="/" className="text-white text-lg font-semibold hover:text-gray-300">Home</Link>
+          <Link to="" className="text-white text-lg font-semibold hover:text-gray-300">Hotels</Link>
+          <Link to="" className="text-white text-lg font-semibold hover:text-gray-300">About</Link>
         </div>
         <div>
           <DropdownMenu>
@@ -49,14 +49,12 @@ const Navbar = () => {
                 <DropdownMenuItem>Edit Profile</DropdownMenuItem>
                 <DropdownMenuItem>Logout</DropdownMenuItem>
               </DropdownMenuGroup>
-
             {
               
               user === "seller" && (<><DropdownMenuSeparator /><DropdownMenuItem>
                 Dashboard
               </DropdownMenuItem></>)
             }
-              
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
