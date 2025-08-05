@@ -7,26 +7,8 @@ import Signup from './pages/Signup'
 import Layout from './mainLayout/Layout';
 import Contact from './pages/Contact';
 import HomePage from './comp/HomePage';
-
-/*
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Layout/>,
-    children: [
-      {
-        path: "/",
-        index: true,
-        element: <Hero/> 
-      },
-      {
-        path: "/login",
-        element: <Signup/> 
-      }
-    ]
-  },
-])*/
-
+import { store } from './app/store'
+import { Provider } from 'react-redux'
 
 const router = createBrowserRouter([
   {
@@ -55,7 +37,9 @@ function App() {
 
   return (
     <>
+    <Provider store={store}>
     <RouterProvider router={router} />
+    </Provider>
     </>
   )
 }

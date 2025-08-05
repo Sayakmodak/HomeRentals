@@ -17,6 +17,7 @@ import {
   TabsTrigger,
 } from "@/components/ui/tabs"
 import { HomeIcon, Sidebar } from 'lucide-react'
+import { useRegisterUserMutation } from '@/features/api/authApi.js'
 
 const Signup = () => {
   const [signUpData, setSignUpData] = useState({
@@ -31,6 +32,8 @@ const Signup = () => {
     password: ''
   });
 
+  const [register, {data, isLoading, isSuccess, isError, error}] = useRegisterUserMutation();
+
 const handleOnValueChange = (e, type) => {
     if (type === "login") {
       const { name, value } = e.target;
@@ -42,11 +45,12 @@ const handleOnValueChange = (e, type) => {
     }
   }
 
-const handleOnSubmit = (type) => {
+const handleOnSubmit = async (type) => {
     if (type === "login") {
       console.log(loginData);
     }
     else {
+      await register(signUpData);
       console.log(signUpData);
     }
   }
