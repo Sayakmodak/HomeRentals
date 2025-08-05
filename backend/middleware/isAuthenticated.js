@@ -6,14 +6,14 @@ export const isAuthenticated = async (req, res, next) => {
         if(!token){
             return res.status(401).json({
             success: false,
-            message: "user not authenticated"
+            message: "User not authenticated"
         }) 
         }
         const decode = jwt.verify(token, process.env.PRIVATE_KEY);
         if(!decode){
             return res.status(401).json({
             success: false,
-            message: "invalid token"
+            message: "Invalid token"
         })
         }
         req.id = decode.id;
@@ -21,7 +21,7 @@ export const isAuthenticated = async (req, res, next) => {
     } catch (error) {
         return res.status(500).json({
             success: false,
-            message: "failed to authenticate"
+            message: "Failed to authenticate"
         })
     }
 }

@@ -5,13 +5,14 @@ import { deleteImageFromCloudinary, uploadMedia } from '../Utils/cloudinary.js';
 
 export const register = async (req, res) =>{
     try {
-        const {name, email, password} = req.body;
+        const {name, email, role, password} = req.body;
+        // console.log(name, email, role, password);
 
-        // all fields are required
-        if(!name || !email || !password){
+        // all fields are required  
+        if(!name || !email || !password || !role){
             return res.status(401).json({
                 success: false,
-                message: "all fields are reuqired"
+                message: "All fields are required"
             })
         }
 
@@ -20,21 +21,20 @@ export const register = async (req, res) =>{
         if(isUser){
             return res.status(401).json({
                 success: false,
-                message: "user already registered"
+                message: "User already registered"
             })
         }
 
         // hashing the password
         const hashedPassword = await bcrypt.hash(password, 10);
-        console.log(hashedPassword);
 
         // creating the user
         const user = await User.create({
             name: name,
             email: email,
+            role: role,
             password: hashedPassword
         }) 
-        // await User.save();
 
         return res.status(200).json({
             success: true,
@@ -62,6 +62,7 @@ export const login = async (req, res) =>{
             })
         }
 
+        // if the user is not present in the db
         const user = await User.findOne({email});
         if(!user){
             return res.status(401).json({
@@ -86,9 +87,11 @@ export const login = async (req, res) =>{
         }
         // generate the token and set the cookie in the browser
         const token = jwt.sign({id: user._id}, process.env.PRIVATE_KEY, {expiresIn: "1d"});
-        console.log(token);
+        // console.log(token);
         return res.status(200).cookie("token", token, options).json({
             success: true,
+            user,
+            token,
             message: `Welcome ${user.name}`
         })
     } catch (error) {
