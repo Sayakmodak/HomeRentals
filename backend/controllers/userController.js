@@ -82,13 +82,14 @@ export const login = async (req, res) =>{
         let options = {
         maxAge: 1000 * 60 * 60 * 24,
         httpOnly: true, // Cookie will not be exposed to client side code
-        sameSite: "strict", // If client and server origins are same
-        secure: true // use with HTTPS only
+        sameSite: "lax", // If client and server origins are same
+        secure: false // (secure: true) HTTPS only, otherwise false
         }
         // generate the token and set the cookie in the browser
         const token = jwt.sign({id: user._id}, process.env.PRIVATE_KEY, {expiresIn: "1d"});
         // console.log(token);
-        return res.status(200).cookie("token", token, options).json({
+        res.cookie("token", token, options);
+        return res.status(200).json({
             success: true,
             user,
             token,
@@ -119,7 +120,7 @@ export const logout = async (req, res)=>{
 export const getUserProfile = async (req, res) =>{
     try {
         const userId = req.id;
-
+        // console.log(userId);
         const user = await User.findById(userId).select("-password");
         if(!user){
             return res.status(404).json({
