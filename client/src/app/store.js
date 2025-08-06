@@ -16,6 +16,14 @@ export const store = configureStore({
 setupListeners(store.dispatch);
 
 
+/*
+const initializeApp = async () => {
+    await store.dispatch(authApi.endpoints.loadUser.initiate({}, { forceRefetch: true }))
+}
+initializeApp();
+*/
+
+
 
 /*
 import { configureStore } from '@reduxjs/toolkit'

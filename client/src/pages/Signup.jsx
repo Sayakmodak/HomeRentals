@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
@@ -16,10 +16,16 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs"
-import { HomeIcon, Sidebar } from 'lucide-react'
-import { useRegisterUserMutation } from '@/features/api/authApi.js'
+import { HomeIcon, Loader2} from 'lucide-react'
+import { useLoginUserMutation, useRegisterUserMutation } from '@/features/api/authApi.js'
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from 'react-router-dom'
+
+// toast.configure();
 
 const Signup = () => {
+  const navigate = useNavigate();
   const [signUpData, setSignUpData] = useState({
     name: '',
     email: '',
@@ -32,7 +38,9 @@ const Signup = () => {
     password: ''
   });
 
-  const [register, {data, isLoading, isSuccess, isError, error}] = useRegisterUserMutation();
+  const [register, {data: registerInput, isLoading: registerIsLoading, isSuccess: registerIsSuccess, isError: registerIsError, error: registerError}] = useRegisterUserMutation();
+  console.log(registerInput);
+  const [login, {data: loginInput, isLoading: loginIsLoading, isSuccess: loginIsSuccess, isError: loginIsError, error: loginError}] = useLoginUserMutation();
 
 const handleOnValueChange = (e, type) => {
     if (type === "login") {
@@ -47,13 +55,34 @@ const handleOnValueChange = (e, type) => {
 
 const handleOnSubmit = async (type) => {
     if (type === "login") {
-      console.log(loginData);
+      // console.log(loginData);
+      await login(loginData);
     }
     else {
+      // console.log(signUpData);
       await register(signUpData);
-      console.log(signUpData);
     }
   }
+
+  useEffect(()=>{
+    if(registerInput && registerIsSuccess){
+      toast.success(registerInput.message || "User registered", {
+        className: "toast-message",
+      });
+    }
+    if(registerIsError){
+      toast.error(registerError.data.message || "Signup failed");
+    }
+    if(loginInput && loginIsSuccess){
+      navigate("/");
+      toast.success(loginInput.message || `Login successfull ${loginInput.user.name}`, {
+        className: "toast-message"
+      });
+    }
+    if(loginIsError){
+      toast.error(loginError.data.message || "Login failed");
+    }
+  }, [registerInput, registerError, registerIsSuccess, loginInput, loginError]);
 
   return (
     <>
@@ -109,7 +138,14 @@ const handleOnSubmit = async (type) => {
 
                 </CardContent>
                 <CardFooter>
-                  <Button onClick={() => handleOnSubmit("signup")} type="submit">Signup</Button>
+                  { 
+                    <Button onClick={() => handleOnSubmit("signup")} type="submit" className={`${registerIsLoading ? "bg-[#979a9b] hover:bg-[#979a9b]" : ""}`}>
+                    {
+                      registerIsLoading ? (<>
+                      <Loader2 className='h-4 w-4 mr-2 animate-spin'/> Please wait 
+                    </> ) : "Signup"
+                    }</Button>
+                  }
                 </CardFooter>
               </Card>
             </TabsContent>
@@ -150,7 +186,7 @@ const handleOnSubmit = async (type) => {
 export default Signup
 
 
-
+// separate navbar for only auth page
 const LoginNavbar = () => {
   return (
     <nav className='flex items-center p-6 shadow-[0_4px_12px_0_rgba(0,0,0,0.15)] mb-4'>
