@@ -15,7 +15,7 @@ router.post("/signup", register);
 router.post("/login", login);
 router.get("/logout", logout);
 router.get("/profile", isAuthenticated, getUserProfile);
-router.post("/update-profile", isAuthenticated, upload.single("imageFile"), updateUserProfile);
+router.put("/update-profile", isAuthenticated, upload.single("imageFile"), updateUserProfile);
 
 
 export default router;

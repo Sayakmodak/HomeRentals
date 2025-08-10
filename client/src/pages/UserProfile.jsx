@@ -20,9 +20,8 @@ const UserProfile = () => {
   // console.log(data);
 
   const {user} = data || {};
-  console.log(user);
+  // console.log(user);
 
-  const loading = false;
 
   const getFileInfo = (e)=>{
     const userImg = e.target.files[0];

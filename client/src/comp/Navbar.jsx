@@ -17,11 +17,14 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useSelector } from 'react-redux';
 
 
 
 const Navbar = () => {
-  const user = "seller";
+  const user = useSelector(state => state.auth.user);
+  // console.log(user);
+
   console.log(window.location.pathname);
   const path = "/"; 
   if(path === "/"){
@@ -45,7 +48,7 @@ const Navbar = () => {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Avatar>
-                <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                <AvatarImage src={user?.profileImg || "https://github.com/shadcn.png"} alt="@shadcn" />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
             </DropdownMenuTrigger>

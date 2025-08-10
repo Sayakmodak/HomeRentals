@@ -69,7 +69,7 @@ export const authApi = createApi({
     updateUserProfile: builder.mutation({
       query: (formData) => ({ 
         url: "/update-profile", //  http://localhost:8080/api/v1/user/update-profile
-        method: "POST",
+        method: "PUT",
         body: formData,
       }),
     }),
