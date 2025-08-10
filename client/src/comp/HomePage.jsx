@@ -3,9 +3,9 @@ import Hero from './Hero';
 
 const HomePage = () => {
   return (
-    <div className='border-red-500'>
+    // <div className='border-red-500'>
       <Hero/>
-    </div>
+    // </div>
   )
 }
 
