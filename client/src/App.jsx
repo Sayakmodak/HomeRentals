@@ -9,6 +9,7 @@ import Contact from './pages/Contact';
 import HomePage from './comp/HomePage';
 import { store } from './app/store'
 import { Provider } from 'react-redux'
+import UserProfile from './pages/UserProfile';
 
 const router = createBrowserRouter([
   {
@@ -24,10 +25,10 @@ const router = createBrowserRouter([
         index: true,
         element: <HomePage/> 
       },
-      // {
-      //   path: "/contact",
-      //   element: <Contact/> 
-      // },
+      {
+        path: "/profile",
+        element: <UserProfile/> 
+      },
     ]
   }
 ]);

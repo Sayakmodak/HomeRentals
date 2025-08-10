@@ -17,25 +17,24 @@ const userSchema = new mongoose.Schema(
     profileImg: {
       type: String,
     },
-    role:{
-        type: String,
-        enum: ["customer", "seller"],
-        default: "customer"
+    role: {
+      type: String,
+      enum: ["customer", "seller"],
+      default: "customer",
     },
     wishList: [
       {
         type: String,
-      }
+      },
     ],
     purchasedHotels: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Hotels"
-        }
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Hotels",
+      },
     ],
   },
   { timestamps: true }
 );
-
 
 export const User = mongoose.model("User", userSchema);

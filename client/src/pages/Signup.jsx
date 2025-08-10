@@ -20,9 +20,8 @@ import { HomeIcon, Loader2} from 'lucide-react'
 import { useLoginUserMutation, useRegisterUserMutation } from '@/features/api/authApi.js'
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
-// toast.configure();
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -39,7 +38,8 @@ const Signup = () => {
   });
 
   const [register, {data: registerInput, isLoading: registerIsLoading, isSuccess: registerIsSuccess, isError: registerIsError, error: registerError}] = useRegisterUserMutation();
-  console.log(registerInput);
+  // console.log(registerInput);
+
   const [login, {data: loginInput, isLoading: loginIsLoading, isSuccess: loginIsSuccess, isError: loginIsError, error: loginError}] = useLoginUserMutation();
 
 const handleOnValueChange = (e, type) => {
@@ -71,7 +71,7 @@ const handleOnSubmit = async (type) => {
       });
     }
     if(registerIsError){
-      toast.error(registerError.data.message || "Signup failed");
+      toast.error(registerError.message || "Signup failed");
     }
     if(loginInput && loginIsSuccess){
       navigate("/");
@@ -80,9 +80,10 @@ const handleOnSubmit = async (type) => {
       });
     }
     if(loginIsError){
-      toast.error(loginError.data.message || "Login failed");
+      toast.error(loginError.message || "Login failed");
     }
   }, [registerInput, registerError, registerIsSuccess, loginInput, loginError]);
+
 
   return (
     <>
@@ -172,7 +173,10 @@ const handleOnSubmit = async (type) => {
                   </div>
                 </CardContent>
                 <CardFooter>
-                  <Button type="submit" onClick={() => { handleOnSubmit("login") }}>SignIn</Button>
+                  <Button type="submit" onClick={() => { handleOnSubmit("login") }}>
+                    {
+                      loginIsLoading ? (<><Loader2 className='mr-2 h-4 w-4 animate-spin'/>Please wait</>) : "SignIn" 
+                    }</Button>
                 </CardFooter>
               </Card>
             </TabsContent>
@@ -189,9 +193,11 @@ export default Signup
 // separate navbar for only auth page
 const LoginNavbar = () => {
   return (
+    <Link to={"/"}>
     <nav className='flex items-center p-6 shadow-[0_4px_12px_0_rgba(0,0,0,0.15)] mb-4'>
       <HomeIcon />
       <h2>HomeRentals</h2>
     </nav>
+    </Link>
   )
 }

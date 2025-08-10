@@ -83,7 +83,7 @@ export const login = async (req, res) =>{
         maxAge: 1000 * 60 * 60 * 24,
         httpOnly: true, // Cookie will not be exposed to client side code
         sameSite: "lax", // If client and server origins are same
-        secure: false // (secure: true) HTTPS only, otherwise false
+        secure: false // (secure: true) HTTPS only, otherwise false for localhost
         }
         // generate the token and set the cookie in the browser
         const token = jwt.sign({id: user._id}, process.env.PRIVATE_KEY, {expiresIn: "1d"});
