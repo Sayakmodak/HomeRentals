@@ -108,17 +108,11 @@ const Navbar = () => {
         {/* {/* Logo  */}
         <Link to="/" className="flex items-center gap-1 text-lg">
           <HomeIcon
-            className={`${
-              window.location.pathname === "/" ? "text-white" : "text-black"
-            }`}
+            className="text-white"
           />
           <h2
-            className={`${
-              window.location.pathname === "/" ? "text-white" : "text-black"
-            }`}
-          >
-            HomeRentals
-          </h2>
+            className="text-white">
+            HomeRentals</h2>
         </Link>
 
         {/* {/* Desktop Nav  */}
@@ -128,11 +122,9 @@ const Navbar = () => {
               key={i}
               to={elm.path}
               className={`group flex flex-col gap-0.5 text-lg ${
-                window.location.pathname === "/"
-                  ? isScrolled
+                   isScrolled
                     ? "text-gray-700"
                     : "text-white"
-                  : "text-black"
               }`}
             >
               {elm.name}
@@ -250,8 +242,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
-/*
-className={`group flex flex-col gap-0.5 text-lg ${
-                isScrolled ? "text-gray-700" : "text-white"
-              } ${window.location.pathname === "/" ? "text-white" : "text-black"}`}*/
