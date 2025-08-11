@@ -75,6 +75,7 @@ export default Navbar
 */
 
 const Navbar = () => {
+  console.log(window.location.pathname);
   const user = useSelector((state) => state.auth.user);
   const navLinks = [
     { name: "Home", path: "/" },
@@ -102,12 +103,22 @@ const Navbar = () => {
           isScrolled
             ? "bg-white/80 shadow-md text-gray-700 backdrop-blur-lg py-3 md:py-4"
             : "py-4 md:py-6"
-        }`}
+        } ${window.location.pathname === "/" ? "" : "bg-indigo-500"}`}
       >
         {/* {/* Logo  */}
         <Link to="/" className="flex items-center gap-1 text-lg">
-          <HomeIcon className="text-white" />
-          <h2 className="text-white">HomeRentals</h2>
+          <HomeIcon
+            className={`${
+              window.location.pathname === "/" ? "text-white" : "text-black"
+            }`}
+          />
+          <h2
+            className={`${
+              window.location.pathname === "/" ? "text-white" : "text-black"
+            }`}
+          >
+            HomeRentals
+          </h2>
         </Link>
 
         {/* {/* Desktop Nav  */}
@@ -117,7 +128,11 @@ const Navbar = () => {
               key={i}
               to={elm.path}
               className={`group flex flex-col gap-0.5 text-lg ${
-                isScrolled ? "text-gray-700" : "text-white"
+                window.location.pathname === "/"
+                  ? isScrolled
+                    ? "text-gray-700"
+                    : "text-white"
+                  : "text-black"
               }`}
             >
               {elm.name}
@@ -235,3 +250,8 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+/*
+className={`group flex flex-col gap-0.5 text-lg ${
+                isScrolled ? "text-gray-700" : "text-white"
+              } ${window.location.pathname === "/" ? "text-white" : "text-black"}`}*/
