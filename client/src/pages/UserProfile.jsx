@@ -47,7 +47,7 @@ const UserProfile = () => {
    }, [updateData, updateIsSuccess, updateError, updateIsError])
 
   return (
-    <div className='max-w-4xl mx-auto px-4 my-24'>
+    <div className='max-w-4xl mx-auto px-4 my-24 mt-28'>
             <h1 className='font-bold text-2xl text-center md:text-left'>MY PROFILE</h1>
             <div className='flex flex-col md:flex-row items-center md:items-start gap-7 my-5'>
                 <div className='flex flex-col items-center'>
