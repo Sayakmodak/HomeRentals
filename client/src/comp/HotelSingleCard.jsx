@@ -4,7 +4,7 @@ import React from 'react'
 
 const HotelSingleCard = () => {
   return (
-      <div className="bg-white [box-shadow:0_4px_12px_-5px_rgba(0,0,0,0.4)] w-64 h-72 rounded-lg overflow-hidden mx-auto mt-4 border border-red-500">
+      <div className="bg-white [box-shadow:0_4px_12px_-5px_rgba(0,0,0,0.4)] w-64 h-72 rounded-lg overflow-hidden mx-auto mt-4 border-red-500">
       <div className="">
         <img src="https://readymadeui.com/Imagination.webp" className="w-full h-full object-cover" alt="Card image" />
       </div>

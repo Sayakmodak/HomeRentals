@@ -15,8 +15,8 @@ const HotelCards = () => {
         </p>
       </div>
       <div className="flex items-center mb-5 p-2 gap-5">
-        {arr.map((hotelCard) => {
-          return <HotelSingleCard />
+        {arr.map((hotelCard, i) => {
+          return <HotelSingleCard key={i}/>
         })}
       </div>
       <Button variant={"outline"} className="mt-8">View All Hotels</Button>
