@@ -10,6 +10,7 @@ import HomePage from './comp/HomePage';
 import { store } from './app/store'
 import { Provider } from 'react-redux'
 import UserProfile from './pages/UserProfile';
+import HotelList from './pages/HotelList';
 
 const router = createBrowserRouter([
   {
@@ -29,13 +30,17 @@ const router = createBrowserRouter([
         path: "/profile",
         element: <UserProfile/> 
       },
+      {
+        path: "/hotels",
+        element: <HotelList/> 
+      },
+
     ]
   }
 ]);
 
 
 function App() {
-
   return (
     <>
     <Provider store={store}>

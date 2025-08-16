@@ -6,7 +6,7 @@ import TestimonialCard from "./TestimonialCard";
 
 const TestimonialSection = () => {
   return (
-    <div className="bg-[#f5f8fb] pt-20 flex items-center flex-col pb-10 border-red-500">
+    <div className="pt-20 flex items-center flex-col pb-10 border-red-500">
       <div className="text-center mb-5">
         <h1 className="text-3xl font-bold text-[#252525]">
           What Our Guests Say
