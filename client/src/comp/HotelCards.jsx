@@ -1,8 +1,10 @@
 import React from "react";
 import HotelSingleCard from "./HotelSingleCard";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 const HotelCards = () => {
+  const navigate = useNavigate();
   const arr = [1, 2, 3, 4];
 
   return (
@@ -19,7 +21,7 @@ const HotelCards = () => {
           return <HotelSingleCard key={i}/>
         })}
       </div>
-      <Button variant={"outline"} className="mt-8">View All Hotels</Button>
+      <Button variant={"outline"} className="mt-8 cursor-pointer" onClick={()=> navigate("/hotels")}>View All Hotels</Button>
     </div>
   );
 };

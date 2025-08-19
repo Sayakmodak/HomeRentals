@@ -2,12 +2,32 @@ import React from "react";
 import homeImg from "../assets/home.jpeg";
 import { useNavigate } from "react-router-dom";
 import { MapPin, StarIcon, Wifi } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { Separator } from "@/components/ui/separator";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+
+
+const categories = [
+  {id: "single bed", label: "Single bed"},
+  {id: "double bed", label: "Double bed"},
+  {id: "family suite", label: "Family suite"},
+  {id: "luxury room", label: "Luxury Room"},
+]
 
 const HotelList = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col-reverse lg:flex-row items-center justify-between pt-28 md:pt-35 px-4 md:px-16 lg:px-24 xl:px-32">
+    <div className="flex flex-col-reverse lg:flex-row items-baseline justify-between pt-28 md:pt-35 px-4 md:px-16 lg:px-24 xl:px-32">
       <div>
         <div className="flex flex-col items-start text-left">
           <h1 className="font-playfire text-4xl md:text-[40px]">Hotel Rooms</h1>
@@ -67,8 +87,34 @@ const HotelList = () => {
           );
         })}
       </div>
+      
       {/* Filters */}
-      <div></div>
+      <div>
+        <p className="font-semibold text-lg md:text-xl">FILTERS</p>
+        <Select>
+                    <SelectTrigger>
+                        <SelectValue placeholder="Sort by Price" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectGroup>
+                            <SelectLabel>Sort by price</SelectLabel>
+                            <SelectItem value="low">Low to High</SelectItem>
+                            <SelectItem value="high">High to Low</SelectItem>
+                        </SelectGroup>
+                    </SelectContent>
+          </Select>
+          <Separator className="my-4" />
+          <div>
+            {
+              categories.map((category)=> (
+                <div className='flex items-center space-x-2 my-2' key={category.id}>
+                            <Checkbox id={category.id}/>
+                            <Label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">{category.label}</Label>
+                </div>
+              ))
+            }
+          </div>
+      </div>
     </div>
   );
 };
