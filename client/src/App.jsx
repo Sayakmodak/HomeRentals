@@ -11,6 +11,7 @@ import { store } from './app/store'
 import { Provider } from 'react-redux'
 import UserProfile from './pages/UserProfile';
 import HotelList from './pages/HotelList';
+import HotelDetail from './pages/HotelDetail';
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
       {
         path: "/hotels",
         element: <HotelList/> 
+      },
+      {
+        path: "/hotels/:id",
+        element: <HotelDetail/> 
       },
     ]
   }
