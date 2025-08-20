@@ -52,7 +52,7 @@ export const authApi = createApi({
 
     getUserProfile: builder.query({
       query: () => ({
-        url: "/profile", //  http://localhost:8080/api/v1/user/profile
+        url: "profile", //  http://localhost:8080/api/v1/user/profile
         method: "GET",
       }),
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
@@ -67,7 +67,7 @@ export const authApi = createApi({
     }),
 
     updateUserProfile: builder.mutation({
-      query: (formData) => ({ 
+      query: (formData) => ({
         url: "/update-profile", //  http://localhost:8080/api/v1/user/update-profile
         method: "PUT",
         body: formData,
@@ -75,7 +75,6 @@ export const authApi = createApi({
     }),
   }),
 });
-
 
 export const {
   useRegisterUserMutation,

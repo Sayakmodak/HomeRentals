@@ -1,7 +1,6 @@
 import React from "react";
 import { MapPin, StarIcon, Wifi } from "lucide-react";
 import homeImg from "../assets/home.jpeg";
-import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const HotelDetail = () => {

@@ -8,6 +8,7 @@ import { Loader2 } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 
+
 const UserProfile = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [name, setName] = useState("");
