@@ -12,7 +12,7 @@ export const hotelApi = createApi({
   endpoints: (builder) => ({
     addHotel: builder.mutation({
       query: ({ hotelName, hotelCategory }) => ({
-        url: "addHotel", //  http://localhost:8080/api/v1/hotel/addHotel
+        url: "addhotel", //  http://localhost:8080/api/v1/hotel/addHotel
         method: "POST",
         body: { hotelName, hotelCategory },
       }),
