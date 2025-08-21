@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { HomeIcon } from "lucide-react";
+import { Cross, Crosshair, CrossIcon, HomeIcon } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import {
   DropdownMenu,
@@ -13,14 +13,26 @@ import {
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useSelector } from "react-redux";
-
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import homeJpg from "../assets/home.jpeg";
 
 export default function Navbar() {
   const location = useLocation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const user = useSelector(state => state.auth.user);
+  const user = useSelector((state) => state.auth.user);
 
   const navLinks = [
     { name: "Home", path: "/" },
@@ -57,9 +69,7 @@ export default function Navbar() {
           } w-6 h-6`}
         />
         <h2
-          className={`${
-            isScrolled && isHome ? "text-gray-700" : "text-white"
-          }`}
+          className={`${isScrolled && isHome ? "text-gray-700" : "text-white"}`}
         >
           HomeRentals
         </h2>
@@ -83,35 +93,123 @@ export default function Navbar() {
             />
           </Link>
         ))}
+
+        {/* dialog */}
+        <Dialog>
+          <form>
+            <DialogTrigger asChild>
+              <Button
+                className={`${
+                  isScrolled && isHome ? "text-gray-700" : "text-white"
+                } bg-transparent rounded-full hover:bg-transparent hover:text-white`}
+                variant={"outline"}
+              >
+                List your hotel
+              </Button>
+            </DialogTrigger>
+
+            <div className="">
+              <DialogContent className="flex justify-center border border-red-500">
+                <img src={homeJpg} alt="" className="w-1/2 rounded-xl" />
+                <div>
+                  <DialogHeader className="mb-4">
+                    <DialogTitle>Register your hotel</DialogTitle>
+                  </DialogHeader>
+                  <div className="grid gap-4">
+                    <div className="grid gap-1">
+                      <Label htmlFor="name-1">Hotel Name</Label>
+                      <Input
+                        id="name-1"
+                        name="hotelName"
+                        placeholder="Enter hotel name"
+                        required
+                      />
+                    </div>
+                    <div className="grid gap-1">
+                      <Label htmlFor="username-1">Contact</Label>
+                      <Input
+                        id="username-1"
+                        name="contact"
+                        placeholder="Phone number"
+                        required
+                      />
+                    </div>
+                    <div className="grid gap-1">
+                      <Label htmlFor="username-1">Address</Label>
+                      <Input
+                        id="username-1"
+                        name="address"
+                        placeholder="Address"
+                        required
+                      />
+                    </div>
+                    <div className="grid gap-1">
+                      <Label htmlFor="username-1">Hotel Category</Label>
+                      <select name="" id="">
+                        <option value="">Select Category</option>
+                        <option value="">Luxury Stays</option>
+                        <option value="">Budget Hotels</option>
+                        <option value="">Boutique Hotels</option>
+                        <option value="">Business Hotels</option>
+                        <option value="">Family-Friendly Hotels</option>
+                        <option value="">Pet-Friendly Hotels</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <DialogFooter className="mt-4">
+                    <DialogClose asChild>
+                      <Button variant="outline">Cancel</Button>
+                    </DialogClose>
+                    <Button type="submit">Create</Button>
+                  </DialogFooter>
+                </div>
+              </DialogContent>
+            </div>
+          </form>
+        </Dialog>
+
+        {/* <div className="fixed top-0 bottom-0 left-0 right-0 z-100 flex items-center justify-center bg-black/70">
+          <form action="" className="flex bg-white rounded-xl max-w-4xl max-md:mx-2">
+            <img src={homeJpg} alt="" className="w-1/2 rounded-xl hidden md:block"/>
+
+            <div className="relative flex flex-col items-center md:w-1/2 p-8 md:p-10">
+              <img src="" alt="" />
+              <CrossIcon className="absolute top-4 right-4 h-4 w-4 cursor-pointer"/>
+              <p className="text-2xl font-semibold mt-6">Register</p>
+            </div>
+          </form>
+        </div> */}
       </div>
+
       <div>
         <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button className="h-9 w-9 p-0 rounded-full" variant={"outline"}>
-                <Avatar className="h-9 w-9">
-                  <AvatarImage
-                    src={user?.profileImg || "https://github.com/shadcn.png"}
-                    alt="@shadcn"
-                    // className="h-10 w-10"
-                  />
-                  <AvatarFallback className="text-lg">CN</AvatarFallback>
-                </Avatar>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56" align="start">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuGroup>
-                <DropdownMenuItem>Edit Profile</DropdownMenuItem>
-                <DropdownMenuItem>Logout</DropdownMenuItem>
-              </DropdownMenuGroup>
-              {user?.role === "seller" && (
-                <>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem>Dashboard</DropdownMenuItem>
-                </>
-              )}
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button className="h-9 w-9 p-0 rounded-full" variant={"outline"}>
+              <Avatar className="h-9 w-9">
+                <AvatarImage
+                  src={user?.profileImg || "https://github.com/shadcn.png"}
+                  alt="@shadcn"
+                  // className="h-10 w-10"
+                />
+                <AvatarFallback className="text-lg">CN</AvatarFallback>
+              </Avatar>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-56" align="start">
+            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuGroup>
+              <DropdownMenuItem>Edit Profile</DropdownMenuItem>
+              <DropdownMenuItem>Logout</DropdownMenuItem>
+            </DropdownMenuGroup>
+            {user?.role === "seller" && (
+              <>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>Dashboard</DropdownMenuItem>
+              </>
+            )}
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </nav>
   );
