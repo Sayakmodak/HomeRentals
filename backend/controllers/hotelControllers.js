@@ -1,11 +1,12 @@
 import { Hotels } from "./../models/hotels.model.js";
-// import { User } from "./../models/user.model.js";
 
 export const addHotel = async (req, res) => {
   try {
-    const { hotelName, hotelCategory } = req.body;
+    const { hotelName, hotelCategory, contact, address } = req.body;
 
-    if (!hotelName && !hotelCategory) {
+    // console.log(hotelName, hotelCategory, contact, address);
+
+    if (!hotelName && !hotelCategory && !contact && !address) {
       return res.status(400).json({
         success: false,
         message: "All feilds are required",
@@ -15,11 +16,13 @@ export const addHotel = async (req, res) => {
     const hotel = await Hotels.create({
       hotelName: hotelName,
       hotelCategory: hotelCategory,
+      contact: contact,
+      address: address,
     });
 
     return res.status(200).json({
       success: true,
-      message: "New Hotel Created",
+      message: "Your Hotel Is Registered",
       hotel: hotel,
     });
   } catch (error) {

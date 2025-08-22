@@ -11,7 +11,14 @@ const hotels = new mongoose.Schema(
     },
     hotelCategory: {
       type: String,
-      enum: ["single bed", "double bed", "family suite", "luxury room"],
+      enum: [
+        "Luxury Stays",
+        "Budget Hotels",
+        "Boutique Hotels",
+        "Business Hotels",
+        "Family-Friendly Hotels",
+        "Pet-Friendly Hotels",
+      ],
       required: true,
     },
     hotelDesc: {
@@ -23,7 +30,7 @@ const hotels = new mongoose.Schema(
     },
     contact: {
       type: String,
-      // required: true,
+      required: true,
     },
     owner: {
       type: mongoose.Schema.Types.ObjectId,
@@ -31,7 +38,7 @@ const hotels = new mongoose.Schema(
     },
     address: {
       type: String,
-      // required: true,
+      required: true,
     },
     isPublished: {
       type: Boolean,
