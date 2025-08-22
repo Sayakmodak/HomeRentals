@@ -2,15 +2,19 @@ import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "../features/authSlice.js";
 import { authApi } from "@/features/api/authApi.js";
 import { setupListeners } from "@reduxjs/toolkit/query";
+import { hotelApi } from "@/features/api/hotelApi.js";
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     [authApi.reducerPath]: authApi.reducer,
+    [hotelApi.reducerPath]: hotelApi.reducer,
   },
 
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(authApi.middleware),
+    getDefaultMiddleware()
+      .concat(authApi.middleware)
+      .concat(hotelApi.middleware),
 });
 
 setupListeners(store.dispatch);
