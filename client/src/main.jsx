@@ -1,17 +1,18 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.jsx'
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import "./index.css";
+import App from "./App.jsx";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { store } from './app/store.js';
-import { Provider } from 'react-redux';
+import { store } from "./app/store.js";
+import { Provider } from "react-redux";
+import { SidebarProvider } from "./components/ui/sidebar";
 
-createRoot(document.getElementById('root')).render(
+createRoot(document.getElementById("root")).render(
   <StrictMode>
     <Provider store={store}>
-      <ToastContainer />
-      <App /> 
+        <ToastContainer />
+        <App />
     </Provider>
   </StrictMode>
-)
+);

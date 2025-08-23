@@ -12,35 +12,58 @@ import { Provider } from 'react-redux'
 import UserProfile from './pages/UserProfile';
 import HotelList from './pages/HotelList';
 import HotelDetail from './pages/HotelDetail';
+import AdminLayout from './pages/admin/AdminLayout';
+import Dashboard from './pages/admin/Dashboard';
+import AddRoom from './pages/admin/AddRoom';
+import ListRoom from './pages/admin/ListRoom';
+
 
 const router = createBrowserRouter([
   {
     path: "/login",
-    element: <Signup/> 
+    element: <Signup />,
   },
   {
     path: "/",
-    element: <Layout/>,
+    element: <Layout />,
     children: [
       {
         path: "/",
         index: true,
-        element: <HomePage/> 
+        element: <HomePage />,
       },
       {
         path: "/profile",
-        element: <UserProfile/> 
+        element: <UserProfile />,
       },
       {
         path: "/hotels",
-        element: <HotelList/> 
+        element: <HotelList />,
       },
       {
         path: "/hotels/:id",
-        element: <HotelDetail/> 
+        element: <HotelDetail />,
       },
-    ]
-  }
+    ],
+  },
+  {
+    path: "/dashboard",
+    element: <AdminLayout />,
+    children: [
+      {
+        path: "owner-dashboard",
+        element: <Dashboard />,
+      },
+      {
+        path: "add-room",
+        element: <AddRoom />,
+      },
+      {
+        path: "list-room",
+        element: <ListRoom />,
+      },
+    ],
+  },
 ]);
 
 
@@ -48,7 +71,7 @@ function App() {
   return (
     <>
     <Provider store={store}>
-    <RouterProvider router={router} />
+        <RouterProvider router={router} />
     </Provider>
     </>
   )
