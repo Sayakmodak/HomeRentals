@@ -37,7 +37,7 @@ const HotelList = () => {
           </p>
         </div>
 
-        {Array.from({ length: 3 }).map((id, room) => {
+        {Array.from({ length: 3 }).map((room, id) => {
           return (
             <div
               key={id}
@@ -49,7 +49,7 @@ const HotelList = () => {
                 title="View room details"
                 className="max-h-65 md:w-1/2 rounded-xl shadow-lg object-cover cursor-pointer"
                 onClick={() => {
-                  navigate(`/rooms/${id}`);
+                  navigate(`/hotel/${id}`);
                   scrollTo(0, 0);
                 }}
               />
@@ -58,7 +58,7 @@ const HotelList = () => {
                 <p
                   className="text-gray-800 text-3xl cursor-pointer"
                   onClick={() => {
-                    navigate(`/rooms/${room.id}`);
+                    navigate(`/hotel/${id}`);
                     scrollTo(0, 0);
                   }}
                 >
@@ -81,39 +81,41 @@ const HotelList = () => {
                   </div>
                 </div>
                 {/* Room Price Per Night */}
-                <p className="text-[20px] font-medium text-gray-700 mt-[-30px]">$450 /night</p>
+                <p className="text-[20px] font-medium text-gray-700 mt-[-30px]">
+                  $450 /night
+                </p>
               </div>
             </div>
           );
         })}
       </div>
-      
+
       {/* Filters */}
       <div>
         <p className="font-semibold text-lg md:text-xl">FILTERS</p>
         <Select>
-                    <SelectTrigger>
-                        <SelectValue placeholder="Sort by Price" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectGroup>
-                            <SelectLabel>Sort by price</SelectLabel>
-                            <SelectItem value="low">Low to High</SelectItem>
-                            <SelectItem value="high">High to Low</SelectItem>
-                        </SelectGroup>
-                    </SelectContent>
-          </Select>
-          <Separator className="my-4" />
-          <div>
-            {
-              categories.map((category)=> (
-                <div className='flex items-center space-x-2 my-2' key={category.id}>
-                            <Checkbox id={category.id}/>
-                            <Label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">{category.label}</Label>
-                </div>
-              ))
-            }
-          </div>
+          <SelectTrigger>
+            <SelectValue placeholder="Sort by Price" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectLabel>Sort by price</SelectLabel>
+              <SelectItem value="low">Low to High</SelectItem>
+              <SelectItem value="high">High to Low</SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+        <Separator className="my-4" />
+        <div>
+          {categories.map((category) => (
+            <div className="flex items-center space-x-2 my-2" key={category.id}>
+              <Checkbox id={category.id} />
+              <Label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                {category.label}
+              </Label>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
