@@ -10,11 +10,11 @@ const Sidebar = () => {
 
   return (
     <div>
-      <nav class="bg-white shadow-md border border-gray-200 h-screen fixed top-5 left-0 min-w-[250px] py-6 px-4 overflow-auto mt-10">
+      <nav className="bg-white shadow-md border border-gray-200 h-screen fixed top-5 left-0 min-w-[250px] py-6 px-4 overflow-auto mt-10">
         {
-          sidebarItems.map((page)=> {
+          sidebarItems.map((page, id)=> {
             return (
-              <ul>
+              <ul key={id}>
                 <li>
                   <NavLink
                     to={page.path}

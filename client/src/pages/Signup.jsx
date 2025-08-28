@@ -16,7 +16,7 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs"
-import { HomeIcon, Loader2} from 'lucide-react'
+import { HomeIcon, Loader2, ReceiptRussianRuble} from 'lucide-react'
 import { useLoginUserMutation, useRegisterUserMutation } from '@/features/api/authApi.js'
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";

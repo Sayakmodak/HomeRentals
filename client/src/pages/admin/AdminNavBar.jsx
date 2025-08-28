@@ -11,8 +11,8 @@ const AdminNavBar = () => {
 
   return (
     <div className="">
-      <header class="flex border-b border-gray-300 py-3 px-4 sm:px-10 bg-white min-h-[65px] tracking-wide relative z-50 mb-5">
-        <div class="flex flex-wrap items-center justify-between gap-4 max-w-screen-xl mx-auto w-full">
+      <header className="flex border-b border-gray-300 py-3 px-4 sm:px-10 bg-white min-h-[65px] tracking-wide relative z-50 mb-5">
+        <div className="flex flex-wrap items-center justify-between gap-4 max-w-screen-xl mx-auto w-full">
           <Link to="/" className="flex items-center gap-1 text-lg">
             <HomeIcon className={`text-gray-700 w-6 h-6`} />
             <h2 className={`text-gray-700 w-6 h-6`}>HomeRentals</h2>

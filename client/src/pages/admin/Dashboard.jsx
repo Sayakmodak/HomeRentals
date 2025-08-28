@@ -3,13 +3,18 @@ import React from 'react'
 
 const Dashboard = () => {
   return (
-    <div className=" border-red-400 ml-[265px]">
-      <title
+    <div className="border-red-400 ml-[265px]">
+      <h1 className='font-semibold text-2xl mb-2'>Dashboard</h1>
+      <p
         align="left"
         font="outfit"
         title="Dashboard"
         subtitle="Monitor your room listings, track bookings and analyze reveneu-all in one place. Stay updated with real-time insights to ensure smooth operations."
-      />
+      >
+        Monitor your room listings, track bookings and analyze reveneu-all in
+        one place. <br />Stay updated with real-time insights to ensure smooth
+        operations.
+      </p>
 
       <div className="flex gap-4 my-8">
         {/* Total Bookings */}

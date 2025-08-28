@@ -17,7 +17,7 @@ const DragandDropContainer = ({ setPreviewImages }) => {
   return (
     <div>
       <label
-        for="uploadFile1"
+        htmlFor="uploadFile1"
         className="bg-white text-center rounded w-full max-w-sm min-h-[180px] py-4 px-4 flex flex-col items-center justify-center cursor-pointer border-2 border-gray-300 mx-auto"
       >
         <svg
