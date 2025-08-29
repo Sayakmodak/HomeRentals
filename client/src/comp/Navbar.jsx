@@ -114,37 +114,66 @@ export default function Navbar() {
 
       {modalOpen && <RegisterHotelModal onClose={() => setModalOpen(false)} />}
 
-      <div>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button className="h-9 w-9 p-0 rounded-full" variant={"outline"}>
-              <Avatar className="h-9 w-9">
-                <AvatarImage
-                  src={user?.profileImg || "https://github.com/shadcn.png"}
-                  alt="@shadcn"
-                  // className="h-10 w-10"
-                />
-                <AvatarFallback className="text-lg">CN</AvatarFallback>
-              </Avatar>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56" align="start">
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
-            <DropdownMenuGroup>
-              <Link to={"/profile"}>
-                <DropdownMenuItem>Edit Profile</DropdownMenuItem>
-              </Link>
-              <DropdownMenuItem onClick={handleLogOut}>Logout</DropdownMenuItem>
-            </DropdownMenuGroup>
-            {user?.role === "seller" && (
-              <>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Dashboard</DropdownMenuItem>
-              </>
-            )}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
+      {user ? (
+        <div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button className="h-9 w-9 p-0 rounded-full" variant={"outline"}>
+                <Avatar className="h-9 w-9">
+                  <AvatarImage
+                    src={user?.profileImg || "https://github.com/shadcn.png"}
+                    alt="@shadcn"
+                    // className="h-10 w-10"
+                  />
+                  <AvatarFallback className="text-lg">CN</AvatarFallback>
+                </Avatar>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56" align="start">
+              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuGroup>
+                <Link to={"/profile"}>
+                  <DropdownMenuItem>Edit Profile</DropdownMenuItem>
+                </Link>
+                <DropdownMenuItem onClick={handleLogOut}>
+                  Logout
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+              {user?.role === "seller" && (
+                <>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>Dashboard</DropdownMenuItem>
+                </>
+              )}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      ) : (
+        <div className=" border-red-500 flex gap-1">
+          <Link to="/login">
+            <button
+              className={`text-lg border rounded-sm px-1.5 ${
+                isScrolled && isHome
+                  ? "text-gray-700 border-gray-500"
+                  : "text-white"
+              }`}
+            >
+              Login
+            </button>
+          </Link>
+          <Link to={"/login"}>
+            <button
+              className={`text-lg border rounded-sm px-1.5 ${
+                isScrolled && isHome
+                  ? "text-gray-700 border-gray-500"
+                  : "text-white"
+              }`}
+            >
+              Signup
+            </button>
+          </Link>
+        </div>
+      )}
     </nav>
   );
 }
