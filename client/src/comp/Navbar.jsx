@@ -14,6 +14,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useSelector } from "react-redux";
 import RegisterHotelModal from "./RegisterHotelModal";
 import { HomeIcon } from "lucide-react";
+import { useLogoutUserMutation } from "@/features/api/authApi";
+import { toast } from "react-toastify";
 
 export default function Navbar() {
   const location = useLocation();
@@ -22,6 +24,10 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
 
+  const [logout, { data, isLoading, isSuccess, isError, error }] =
+  useLogoutUserMutation();
+  // console.log(data, error);
+
   const user = useSelector((state) => state.auth.user);
 
   const navLinks = [
@@ -29,6 +35,10 @@ export default function Navbar() {
     { name: "Contact", path: "/" },
     { name: "About", path: "/" },
   ];
+
+  const handleLogOut = async () => {
+    await logout();
+  };
 
   // Detect window scroll
   useEffect(() => {
@@ -39,6 +49,16 @@ export default function Navbar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(()=>{
+    if(isSuccess){
+      toast.success(data.message || "You have been logged out successfully");
+    }
+    if(error){
+      toast.error(error.message || "Some error occured");
+    }
+  }, [isSuccess, isError])
+
 
   return (
     <nav
@@ -111,8 +131,10 @@ export default function Navbar() {
           <DropdownMenuContent className="w-56" align="start">
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuGroup>
-              <DropdownMenuItem>Edit Profile</DropdownMenuItem>
-              <DropdownMenuItem>Logout</DropdownMenuItem>
+              <Link to={"/profile"}>
+                <DropdownMenuItem>Edit Profile</DropdownMenuItem>
+              </Link>
+              <DropdownMenuItem onClick={handleLogOut}>Logout</DropdownMenuItem>
             </DropdownMenuGroup>
             {user?.role === "seller" && (
               <>
