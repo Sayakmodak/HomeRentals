@@ -67,7 +67,7 @@ const AddRoom = () => {
       <div className="flex flex-col flex-wrap mt-1 text-gray-400 max-w-sm">
         {amenities.map((elm, index) => {
           return (
-            <div key={index}>
+            <div key={index} className="flex gap-1">
               <input type="checkbox" id={elm} />
               <label htmlFor={elm}>{elm}</label>
             </div>
