@@ -3,9 +3,9 @@ import { Link, NavLink } from 'react-router-dom';
 
 const Sidebar = () => {
   const sidebarItems = [
-    { page: "Dashboard", path: "/dashboard/owner-dashboard" },
-    { page: "Add Room", path: "/dashboard/add-room" },
-    { page: "List Room", path: "/dashboard/list-room" },
+    { page: "Dashboard", path: "/owner/dashboard" },
+    { page: "Add Room", path: "/owner/add-room" },
+    { page: "List Room", path: "/owner/list-room" },
   ];
 
   return (
