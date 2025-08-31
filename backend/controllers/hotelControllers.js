@@ -33,3 +33,27 @@ export const addHotel = async (req, res) => {
     });
   }
 };
+
+export const listHotels = async (req, res) => {
+  try {
+    const allHotels = await Hotels.find();
+    if (!allHotels) {
+      return res.status(500).json({
+        success: false,
+        message: "Can not list all hotels",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "View all the hotels that you created",
+      allHotels,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Can not list all hotels, some error occured",
+    });
+  }
+};

@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const room = new mongoose.Schema({
   roomCategory: {
     type: String,
-    enum: ["single bed", "double bed", "family suite", "luxury room"],
+    enum: ["Single Bed", "Double Bed", "Family Suite", "Luxury Room"],
     required: true,
   },
 });
