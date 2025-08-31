@@ -140,7 +140,7 @@ const RegisterHotelModal = ({ onClose }) => {
             >
               <option value="">Select Category</option>
               {hotelCategories.map((category, index) => (
-                <option value={category}>{category}</option>
+                <option value={category} key={index}>{category}</option>
               ))}
             </select>
           </div>

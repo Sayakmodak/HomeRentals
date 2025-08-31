@@ -7,8 +7,10 @@ const AdminLayout = () => {
   return (
     <div>
       <AdminNavBar />
+      <div className='flex  border-green-500'>
       <Sidebar />
       <Outlet />
+      </div>
     </div>
   )
 }

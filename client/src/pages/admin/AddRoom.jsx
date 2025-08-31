@@ -11,7 +11,7 @@ const AddRoom = () => {
   ];
 
   return (
-    <div className="ml-[265px]">
+    <div className="ml-5">
       <form action="" encType="multipart/form-data">
         <h1 className="font-semibold text-2xl mb-2">Add Room</h1>
         <p className="mb-2">
@@ -61,7 +61,7 @@ const AddRoom = () => {
           />
         </div>
       </div>
-      
+
       {/* Amenities */}
       <p className="text-gray-800 mt-4">Amenities</p>
       <div className="flex flex-col flex-wrap mt-1 text-gray-400 max-w-sm">

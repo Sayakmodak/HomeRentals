@@ -3,7 +3,7 @@ import React from 'react'
 
 const Dashboard = () => {
   return (
-    <div className="border-red-400 ml-[265px]">
+    <div className="border-red-400 ml-5">
       <h1 className='font-semibold text-2xl mb-2'>Dashboard</h1>
       <p
         align="left"

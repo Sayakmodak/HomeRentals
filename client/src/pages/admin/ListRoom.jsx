@@ -2,7 +2,7 @@ import React from 'react'
 
 const ListRoom = () => {
   return (
-    <div className="ml-[265px]">
+    <div className="ml-5">
       <h1 className="font-semibold text-2xl mb-2">List Room</h1>
       <p className="mb-2">
         View, edit, or manage all listed rooms. Keep the information up-to-date
