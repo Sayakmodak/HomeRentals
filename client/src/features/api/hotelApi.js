@@ -17,7 +17,14 @@ export const hotelApi = createApi({
         body: registerHotel,
       }),
     }),
+
+    listHotels: builder.query({
+      query: () => ({
+        url: "list-hotels", //  http://localhost:8080/api/v1/hotel/list-hotels
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const { useAddHotelMutation } = hotelApi;
+export const { useAddHotelMutation, useListHotelsQuery } = hotelApi;

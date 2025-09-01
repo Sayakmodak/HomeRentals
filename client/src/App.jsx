@@ -13,6 +13,7 @@ import AdminLayout from "./pages/admin/AdminLayout";
 import Dashboard from "./pages/admin/Dashboard";
 import AddRoom from "./pages/admin/AddRoom";
 import ListRoom from "./pages/admin/ListRoom";
+import AllHotelsList from "./pages/admin/AllHotelsList";
 
 const router = createBrowserRouter([
   {
@@ -52,7 +53,7 @@ const router = createBrowserRouter([
       },
       {
         path: "edit-hotel",
-        element: <AddRoom />,
+        element: <AllHotelsList />,
       },
       {
         path: "list-room",

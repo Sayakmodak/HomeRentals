@@ -9,7 +9,7 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className='border border-red-500 mt-[-25px]'>
+    <div className='border-red-500 mt-[-25px]'>
       <nav className="hidden lg:block w-[250px] sm:w-[250px] space-y-8 border border-gray-200 dark:border-gray-700 p-5 sticky top-15  h-screen">
         {sidebarItems.map((page, id) => {
           return (
