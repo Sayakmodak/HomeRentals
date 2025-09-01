@@ -10,6 +10,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useListHotelsQuery } from '@/features/api/hotelApi.js';
+import { Edit } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const invoices = [
   {
@@ -57,6 +59,7 @@ const invoices = [
 ];
 
 const AllHotelsList = () => {
+  const navigate = useNavigate();
   const {data, isLoading, isSuccess, isError, error} = useListHotelsQuery();
   // console.log(data?.allHotels);
 
@@ -65,7 +68,7 @@ const AllHotelsList = () => {
     return <>Loading...</>
   }
 
-  const allHotels = data?.allHotels ; 
+  const allHotels = data?.allHotels;
   // console.log(allHotels);
 
   return (
@@ -89,13 +92,16 @@ const AllHotelsList = () => {
               <th className="py-3 px-4 text-gray-800 font-medium text-center">
                 Ph No.
               </th>
+              <th className="py-3 px-4 text-gray-800 font-medium text-center">
+                Edit Your Hotel
+              </th>
             </tr>
           </thead>
           <tbody className="text-sm">
             {
               allHotels.map((hotel)=>{
                 return (
-                  <tr key={hotel._id}>
+                  <tr key={hotel?._id}>
                     <td className="py-3 px-4 text-gray-700 border-t border-gray-300">
                       {hotel?.hotelName || "The Luxury Hotel"}
                     </td>
@@ -107,6 +113,9 @@ const AllHotelsList = () => {
                     </td>
                     <td className="py-3 px-4 text-gray-700 text-sm text-center border-t border-gray-300">
                       {hotel?.contact || "1234567890"}
+                    </td>
+                    <td className="py-3 px-20 text-gray-700 text-sm text-center border-t border-gray-300">
+                      <Edit size={20} onClick={()=> {navigate(`/owner/edit-hotel/${hotel._id}`);}}/>
                     </td>
                   </tr>
                 );
