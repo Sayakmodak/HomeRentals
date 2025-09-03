@@ -1,18 +1,27 @@
 import React from 'react'
 
-const DragandDropContainer = ({ setPreviewImages }) => {
-   const handleHotelImages = (e) =>{
+const DragandDropContainer = ({ setPreviewImages, setAddRoomData }) => {
+  const handleHotelImages = (e) => {
     const images = e.target.files;
-    for (let i=0; i<4; i++){
-        const fileReader = new FileReader;
-        fileReader.onloadend = () =>{
-            setPreviewImages((prev)=>{
-                return [...prev, {fileImage: fileReader.result}]
-            })
-        }
-        fileReader.readAsDataURL(images[i]);
+    for (let i = 0; i < 4; i++) {
+      const fileReader = new FileReader();
+      fileReader.onloadend = () => {
+        setPreviewImages((prev) => {
+          return [...prev, { fileImage: fileReader.result }];
+        });
+
+        setAddRoomData((prev)=>{
+          return { ...prev, roomImages: [...prev.roomImages, fileReader.result]};
+        })
+
+      };
+      fileReader.readAsDataURL(images[i]);
     }
-   }     
+
+    // setAddRoomData((prev)=> {
+    //   return { ...prev, roomImages: [...prev.roomImages, val] };
+    // })
+  };
 
   return (
     <div>

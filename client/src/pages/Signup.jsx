@@ -136,7 +136,6 @@ const handleOnSubmit = async (type) => {
                     <Label htmlFor="password">Password</Label>
                     <Input id="password" type="password" name="password" value={signUpData.password} onChange={(e) => handleOnValueChange(e, "signup")} />
                   </div>
-
                 </CardContent>
                 <CardFooter>
                   { 

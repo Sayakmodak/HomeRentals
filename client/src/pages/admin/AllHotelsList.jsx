@@ -99,7 +99,7 @@ const AllHotelsList = () => {
           </thead>
           <tbody className="text-sm">
             {
-              allHotels.map((hotel)=>{
+              allHotels?.map((hotel)=>{
                 return (
                   <tr key={hotel?._id}>
                     <td className="py-3 px-4 text-gray-700 border-t border-gray-300">
@@ -115,7 +115,7 @@ const AllHotelsList = () => {
                       {hotel?.contact || "1234567890"}
                     </td>
                     <td className="py-3 px-20 text-gray-700 text-sm text-center border-t border-gray-300">
-                      <Edit size={20} onClick={()=> {navigate(`/owner/edit-hotel/${hotel._id}`);}}/>
+                      <Edit size={20} onClick={()=> {navigate(`/owner/edit-hotel/${hotel._id}`);}} className='cursor-pointer'/>
                     </td>
                   </tr>
                 );
