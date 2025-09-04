@@ -17,10 +17,6 @@ const DragandDropContainer = ({ setPreviewImages, setAddRoomData }) => {
       };
       fileReader.readAsDataURL(images[i]);
     }
-
-    // setAddRoomData((prev)=> {
-    //   return { ...prev, roomImages: [...prev.roomImages, val] };
-    // })
   };
 
   return (
