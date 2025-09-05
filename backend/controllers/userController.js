@@ -158,6 +158,7 @@ export const updateUserProfile = async (req, res) => {
       });
     }
 
+    // delete the existing image of the user
     if (user.profileImg) {
       const image = user.profileImg;
       const publicId = image.split("/").pop().split(".")[0];

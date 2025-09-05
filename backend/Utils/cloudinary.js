@@ -19,6 +19,20 @@ export const uploadMedia = async (file) => {
   }
 };
 
+export const uploadMultipleImages = async (images) => {
+  try {
+    for (const image in images) {
+      const result = await cloudinary.uploader.upload(images[image], {
+        resource_type: "auto",
+      });
+
+      return result;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const deleteImageFromCloudinary = async (publicId) => {
   try {
     await cloudinary.uploader.destroy(publicId);

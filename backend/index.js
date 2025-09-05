@@ -6,6 +6,8 @@ import dotenv from "dotenv";
 import dbConnection from "./dbConnection/db.js";
 import userRoute from "./routes/userRoutes.js";
 import hotelRoute from "./routes/hotelRoutes.js";
+import roomRoute from "./routes/roomRoutes.js";
+
 dotenv.config({});
 
 const port = process.env.PORT || 8000;
@@ -33,6 +35,7 @@ app.get("/", async (req, res) => {
 
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/hotel", hotelRoute);
+app.use("/api/v1/room", roomRoute);
 
 app.listen(port, () => {
   console.log(`Server started at ${port}`);
