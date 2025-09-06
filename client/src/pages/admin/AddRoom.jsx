@@ -1,6 +1,8 @@
 import DragandDropContainer from "@/comp/DragandDropContainer";
 import { useAddRoomMutation } from "@/features/api/roomApi.js";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import { Loader2 } from 'lucide-react';
 
 const AddRoom = () => {
   const [previewImages, setPreviewImages] = useState([]); // for image preview
@@ -33,8 +35,9 @@ const AddRoom = () => {
       setAddRoomData((prev) => {
         // add checked elements into the amenities array
         if (checked) {
-          return { ...prev, amenities: [...prev.amenities, value] };
+          return { ...prev, amenities: [...prev.amenities, value] }; // takes the old amenities array and adds the new checked value at the end.
         }
+        
         // remove unchecked elements from the amenities array
         else {
           return {
@@ -65,8 +68,16 @@ const AddRoom = () => {
 
     await addRoom(formData);
     console.log(data);
-    console.log(isSuccess);
   };
+
+  useEffect(()=>{
+    if(data?.message || isSuccess){
+      toast.success(data?.message || "Room has been created successfully")
+    }
+    if(error){
+      toast.error(error.message || "Can not create a room")
+    }
+  }, [isSuccess, error])
 
   return (
     <div className="ml-5">
@@ -154,7 +165,16 @@ const AddRoom = () => {
         className="bg-blue-600 text-white px-8 py-2 rounded mt-8 cursor-pointer"
         onClick={handleOnClick}
       >
-        Add Room
+        {isLoading ? (
+          <>
+            <div className="flex items-center gap-2">
+            <Loader2 className="animate-spin mr-2 h-4 w-4" />
+            Please Wait...
+            </div>
+          </>
+        ) : (
+          <>Add Room</>
+        )}
       </button>
     </div>
   );

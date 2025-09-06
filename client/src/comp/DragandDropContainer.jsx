@@ -9,27 +9,24 @@ const DragandDropContainer = ({ setPreviewImages, setRoomImages }) => {
       const fileReader = new FileReader();
       fileReader.onloadend = () => {
         setPreviewImages((prev) => {
-          return [...prev, { fileImage: fileReader.result }];
+          return [...prev, { fileImage: fileReader.result }]; // base64// push { fileImage: fileReader.result } object
         });
       };
       fileReader.readAsDataURL(file);
 
       setRoomImages((prev) => {
         // return [...prev, { roomImages: file }]; means -> roomImages = [{ roomImages: file }]
-        return [...prev, file];
+        return [...prev, file];  // push file
       });
     }
   };
 
-
-  //   roomImages.forEach((elm) => {    
-  //   elm === { roomImages: file }
+  //   roomImages.forEach((elm) => {    //   elm === { roomImages: file }
   //   formData.append("roomImages", elm);
-  // });  
+  // });
 
   // That means you’re pushing an object with roomImages: file instead of directly pushing the File object.
   // So when you later append them to FormData, you’re not really appending a File, but { roomImages: File } object → which multer ignores.
-
 
   return (
     <div>

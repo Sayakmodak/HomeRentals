@@ -4,7 +4,6 @@ import { HomeIcon } from 'lucide-react';
 import React from 'react'
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { authApi } from '@/features/api/authApi.js';
 
 const AdminNavBar = () => {
   const user = useSelector((state)=> state.auth.user);
