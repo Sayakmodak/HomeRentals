@@ -115,7 +115,7 @@ const AllHotelsList = () => {
                       {hotel?.contact || "1234567890"}
                     </td>
                     <td className="py-3 px-20 text-gray-700 text-sm text-center border-t border-gray-300">
-                      <Edit size={20} onClick={()=> {navigate(`/owner/edit-hotel/${hotel._id}`);}} className='cursor-pointer'/>
+                      <Edit size={20} onClick={()=> {navigate(`/owner/edit-hotel/${hotel._id}/addroom`);}} className='cursor-pointer'/>
                     </td>
                   </tr>
                 );

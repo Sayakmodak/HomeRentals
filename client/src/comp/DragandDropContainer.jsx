@@ -25,7 +25,7 @@ const DragandDropContainer = ({ setPreviewImages, setRoomImages }) => {
   //   formData.append("roomImages", elm);
   // });
 
-  // That means you’re pushing an object with roomImages: file instead of directly pushing the File object.
+  // That means you’re pushing an object with {roomImages: file} instead of directly pushing the File object.
   // So when you later append them to FormData, you’re not really appending a File, but { roomImages: File } object → which multer ignores.
 
   return (

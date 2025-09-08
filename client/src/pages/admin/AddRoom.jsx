@@ -3,8 +3,13 @@ import { useAddRoomMutation } from "@/features/api/roomApi.js";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Loader2 } from 'lucide-react';
+import { useParams } from "react-router-dom";
 
 const AddRoom = () => {
+  const params = useParams();
+  const { hotelId } = params;
+  // console.log("Hotel Id of Hotel Sea gull is", hotelId);  // 68b5a8d408f558795280138f
+
   const [previewImages, setPreviewImages] = useState([]); // for image preview
   // console.log(previewImages);    array of objects for this line -> return [...prev, { fileImage: fileReader.result }];
 
@@ -37,7 +42,7 @@ const AddRoom = () => {
         if (checked) {
           return { ...prev, amenities: [...prev.amenities, value] }; // takes the old amenities array and adds the new checked value at the end.
         }
-        
+
         // remove unchecked elements from the amenities array
         else {
           return {
@@ -65,19 +70,19 @@ const AddRoom = () => {
     roomImages.forEach((elm) => {
       formData.append("roomImages", elm);
     });
-
-    await addRoom(formData);
-    console.log(data);
+    console.log(formData);
+    await addRoom({ hotelId, formData });
+    // console.log(data);
   };
 
-  useEffect(()=>{
-    if(data?.message || isSuccess){
-      toast.success(data?.message || "Room has been created successfully")
+  useEffect(() => {
+    if (data?.message || isSuccess) {
+      toast.success(data?.message || "Room has been created successfully");
     }
-    if(error){
-      toast.error(error.message || "Can not create a room")
+    if (error) {
+      toast.error(error.message || "Can not create a room");
     }
-  }, [isSuccess, error])
+  }, [isSuccess, error]);
 
   return (
     <div className="ml-5">
@@ -168,8 +173,8 @@ const AddRoom = () => {
         {isLoading ? (
           <>
             <div className="flex items-center gap-2">
-            <Loader2 className="animate-spin mr-2 h-4 w-4" />
-            Please Wait...
+              <Loader2 className="animate-spin mr-2 h-4 w-4" />
+              Please Wait...
             </div>
           </>
         ) : (

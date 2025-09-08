@@ -71,7 +71,10 @@ const ListRoom = () => {
         <div key={index} className="space-y-3">
           {/* Hotel Name */}
           <div className="border border-gray-400 rounded-md px-4 py-2 font-semibold text-gray-700 mt-5">
-            <p className="border-green-600"> {hotel.hotelName || "Hotel Name"}</p>
+            <p className="border-green-600">
+              {" "}
+              {hotel.hotelName || "Hotel Name"}
+            </p>
           </div>
 
           {/* Rooms */}
@@ -91,6 +94,9 @@ const ListRoom = () => {
                   <th className="py-3 px-4 text-gray-800 font-medium max-sm:hidden">
                     Facility
                   </th>
+                  <th className="py-3 px-4 text-gray-800 font-medium max-sm:hidden">
+                    Category
+                  </th>
                   <th className="py-3 px-4 text-gray-800 font-medium text-center">
                     Price /night
                   </th>
@@ -101,6 +107,9 @@ const ListRoom = () => {
               </thead>
               <tbody className="text-sm">
                 <tr>
+                  <td className="py-3 px-4 text-gray-700 border-t border-gray-300 text-center">
+                    Standard Room
+                  </td>
                   <td className="py-3 px-4 text-gray-700 border-t border-gray-300 text-center">
                     Single Bed
                   </td>
