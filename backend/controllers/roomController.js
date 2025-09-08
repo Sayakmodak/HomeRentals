@@ -1,13 +1,23 @@
+import { Hotels } from "../models/hotels.model.js";
 import { Room } from "../models/room.models.js";
-import { uploadMedia, uploadMultipleImages } from "../Utils/cloudinary.js";
+import { uploadMedia } from "../Utils/cloudinary.js";
 
 export const addRoom = async (req, res) => {
   try {
     const roomImages = req.files; // this will be an array
-    console.log("roomimages are", roomImages);
+    // console.log("roomimages are", roomImages);
+    const { hotelId } = req.params; // is an object always
 
-    const { roomCategory, pricePerNight, amenities } = req.body;
+    const { roomName, roomCategory, pricePerNight, amenities } = req.body;
     // console.log(roomCategory, pricePerNight, amenities);
+
+    const hotel = await Hotels.findOne({ _id: hotelId });
+    if (!hotel) {
+      return res.status(404).json({
+        success: true,
+        message: "Could not find the hotel",
+      });
+    }
 
     const roomImageURLs = [];
     for (let img of roomImages) {
@@ -25,13 +35,20 @@ export const addRoom = async (req, res) => {
 
     const addRoom = await Room.create({
       roomImages: roomImageURLs,
+      roomName: roomName,
       roomCategory: roomCategory,
       amenities: amenities,
       pricePerNight: pricePerNight,
     });
 
-    return res.status(200).json({
+    hotel.rooms.push(addRoom._id);
+    await hotel.save();
+
+    // console.log(hotel, hotel.rooms);
+
+    return res.status(201).json({
       success: true,
+      message: `Room ${roomName} has been created successfully`,
       addRoom,
     });
   } catch (error) {

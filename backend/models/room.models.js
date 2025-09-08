@@ -2,6 +2,14 @@ import mongoose from "mongoose";
 
 const room = new mongoose.Schema(
   {
+    // roomRef: {
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   ref: "Hotels",
+    // },
+    roomName: {
+      type: String,
+      required: true,
+    },
     roomImages: {
       // now, roomImages is an array of strings
       type: [String],

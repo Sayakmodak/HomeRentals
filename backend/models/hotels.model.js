@@ -50,6 +50,12 @@ const hotels = new mongoose.Schema(
     rating: {
       type: String,
     },
+    rooms: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Room",
+      },
+    ],
   },
   { timestamps: true }
 );

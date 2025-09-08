@@ -5,6 +5,12 @@ import { isAuthenticated } from "./../middleware/isAuthenticated.js";
 
 const route = express.Router();
 
-route.post("/addroom", isAuthenticated, upload.array("roomImages", 4), addRoom); // /api/v1/room/addroom
+// ${hotelId}/room/addroom
+route.post(
+  "/:hotelId/room/addroom",
+  isAuthenticated,
+  upload.array("roomImages", 4),
+  addRoom
+); // /api/v1/hotel:hotelId/room/addroom
 
 export default route;

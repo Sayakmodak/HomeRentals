@@ -35,7 +35,7 @@ app.get("/", async (req, res) => {
 
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/hotel", hotelRoute);
-app.use("/api/v1/room", roomRoute);
+app.use("/api/v1/hotel", roomRoute);
 
 app.listen(port, () => {
   console.log(`Server started at ${port}`);

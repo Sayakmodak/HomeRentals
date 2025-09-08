@@ -1,9 +1,14 @@
+import { User } from "../models/user.model.js";
 import { Hotels } from "./../models/hotels.model.js";
 
 export const addHotel = async (req, res) => {
   try {
     const { hotelName, hotelCategory, contact, address } = req.body;
+    const userId = req.id;
+    // console.log(userId);
 
+    const owner = await User.findOne({ _id: userId }).select("-password");
+    // console.log(owner.name);
     // console.log(hotelName, hotelCategory, contact, address);
 
     if (!hotelName && !hotelCategory && !contact && !address) {
@@ -18,6 +23,7 @@ export const addHotel = async (req, res) => {
       hotelCategory: hotelCategory,
       contact: contact,
       address: address,
+      owner: owner._id,
     });
 
     return res.status(200).json({
