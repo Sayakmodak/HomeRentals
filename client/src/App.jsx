@@ -66,6 +66,10 @@ const router = createBrowserRouter([
         path: "list-room",
         element: <ListRoom />,
       },
+      {
+        path: "update-room/hotel/:hotelId/room/:roomId",
+        element: <AddRoom />,
+      },
     ],
   },
 ]);

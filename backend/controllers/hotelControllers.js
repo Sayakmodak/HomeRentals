@@ -42,7 +42,7 @@ export const addHotel = async (req, res) => {
 
 export const listHotels = async (req, res) => {
   try {
-    const allHotels = await Hotels.find();
+    const allHotels = await Hotels.find().populate({ path: "rooms" });
     if (!allHotels) {
       return res.status(500).json({
         success: false,

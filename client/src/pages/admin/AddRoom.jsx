@@ -1,28 +1,53 @@
 import DragandDropContainer from "@/comp/DragandDropContainer";
-import { useAddRoomMutation } from "@/features/api/roomApi.js";
+import {
+  useAddRoomMutation,
+  useFetchSpecificRoomQuery,
+} from "@/features/api/roomApi.js";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { Loader2 } from 'lucide-react';
-import { useParams } from "react-router-dom";
+import { Loader2 } from "lucide-react";
+import { useParams, useSearchParams } from "react-router-dom";
 
 const AddRoom = () => {
   const params = useParams();
-  const { hotelId } = params;
+  const { hotelId, roomId } = params;
+  console.log(roomId); // 68bf2b72cce908ea7bfb52d2
   // console.log("Hotel Id of Hotel Sea gull is", hotelId);  // 68b5a8d408f558795280138f
 
   const [previewImages, setPreviewImages] = useState([]); // for image preview
   // console.log(previewImages);    array of objects for this line -> return [...prev, { fileImage: fileReader.result }];
 
   const [addRoomData, setAddRoomData] = useState({
+    roomName: "",
     roomCategory: "",
     pricePerNight: "",
     amenities: [],
   });
-
   const [roomImages, setRoomImages] = useState([]);
 
-  const [addRoom, { data, isLoading, isSuccess, isError, error }] =
-    useAddRoomMutation();
+  const [
+    addRoom,
+    {
+      data: addRoomDataInfo,
+      isLoading: addRoomIsLoading,
+      isSuccess: addRoomIsSuccess,
+      isError: addRoomIsError,
+      error: addRoomError,
+    },
+  ] = useAddRoomMutation();
+
+  const {
+    data: specificRoomData,
+    isLoading: specificRoomIsLoading,
+    isSuccess: specificRoomIsSuccess,
+    isError: specificRoomIsError,
+    error: specificRoomError,
+  } = useFetchSpecificRoomQuery(roomId);
+
+  console.log("data is", specificRoomData?.room);
+
+  const room = specificRoomData?.room;
+  // console.log(room.roomName);
 
   const amenities = [
     "Free Wifi",
@@ -31,6 +56,21 @@ const AddRoom = () => {
     "Pool Access",
     "Mountain View",
   ];
+
+  useEffect(()=>{
+    if(specificRoomIsSuccess || room){
+      setAddRoomData((prev)=> {
+        return {
+          ...prev,
+          roomName: room.roomName,
+          pricePerNight: room.pricePerNight,
+          roomCategory: room.roomCategory,
+          // room.amenities.
+          amenities: [...prev.amenities, ...room.amenities],
+        };
+      })
+    }
+  }, [room]);
 
   const handleOnChange = (e) => {
     const { name, type, checked, value } = e.target;
@@ -59,6 +99,7 @@ const AddRoom = () => {
   const handleOnClick = async () => {
     // console.log(addRoomData);
     const formData = new FormData();
+    formData.append("roomName", addRoomData.roomName);
     formData.append("roomCategory", addRoomData.roomCategory);
     formData.append("pricePerNight", addRoomData.pricePerNight);
 
@@ -70,19 +111,32 @@ const AddRoom = () => {
     roomImages.forEach((elm) => {
       formData.append("roomImages", elm);
     });
-    console.log(formData);
     await addRoom({ hotelId, formData });
-    // console.log(data);
   };
 
   useEffect(() => {
-    if (data?.message || isSuccess) {
-      toast.success(data?.message || "Room has been created successfully");
+    if (addRoomDataInfo?.message || addRoomIsSuccess) {
+      toast.success(
+        addRoomDataInfo?.message || "Room has been created successfully"
+      );
     }
-    if (error) {
-      toast.error(error.message || "Can not create a room");
+    if (addRoomIsError) {
+      toast.error(addRoomIsError.message || "Can not create a room");
     }
-  }, [isSuccess, error]);
+  }, [addRoomIsSuccess, addRoomIsError]);
+
+  if (specificRoomIsLoading) {
+    return <>Loading...</>;
+  }
+
+  // useEffect(() => {
+  //   if (specificRoomIsSuccess || room){
+  //       setAddRoomData((prev)=>{
+  //         return {...prev, roomName: room.roomName}
+  //       })
+  //   }
+  //     // setAddRoomData((prev) => ({ ...prev, roomName: room.roomName }));
+  // }, [specificRoomIsSuccess]);
 
   return (
     <div className="ml-5">
@@ -112,6 +166,18 @@ const AddRoom = () => {
           })}
         </div>
       )}
+      {/* Room Name */}
+      <div>
+        <p className="mt-4 text-gray-500">Room Name</p>
+        <input
+          type="text"
+          placeholder=""
+          className="border border-gray-300 mt-1 rounded p-2 w-50"
+          name="roomName"
+          value={addRoomData.roomName}
+          onChange={handleOnChange}
+        />
+      </div>
 
       {/* Room type */}
       <div className="w-full flex max:sm:flex-col sm:gap-4 mt-4">
@@ -158,6 +224,7 @@ const AddRoom = () => {
                 type="checkbox"
                 id={elm}
                 name="checkbox"
+                checked={addRoomData.amenities.includes(elm)}
                 onChange={handleOnChange}
                 value={elm}
               />
@@ -170,7 +237,7 @@ const AddRoom = () => {
         className="bg-blue-600 text-white px-8 py-2 rounded mt-8 cursor-pointer"
         onClick={handleOnClick}
       >
-        {isLoading ? (
+        {addRoomIsLoading ? (
           <>
             <div className="flex items-center gap-2">
               <Loader2 className="animate-spin mr-2 h-4 w-4" />

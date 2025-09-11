@@ -59,3 +59,34 @@ export const addRoom = async (req, res) => {
     });
   }
 };
+
+export const fetchSpecificRoom = async (req, res) => {
+  try {
+    const { roomId } = req.params;
+    console.log(roomId); // 68bf2b72cce908ea7bfb52d2
+    if (!roomId) {
+      return res.status(404).json({
+        success: false,
+        message: "could not find room id",
+      });
+    }
+
+    const room = await Room.findOne({ _id: roomId });
+    if (!room) {
+      return res.status(404).json({
+        success: false,
+        message: "Could not find the room",
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      room,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "some error occured while fetching the room",
+    });
+  }
+};
