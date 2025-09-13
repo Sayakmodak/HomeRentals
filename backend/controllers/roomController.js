@@ -63,7 +63,7 @@ export const addRoom = async (req, res) => {
 export const fetchSpecificRoom = async (req, res) => {
   try {
     const { roomId } = req.params;
-    console.log(roomId); // 68bf2b72cce908ea7bfb52d2
+    // console.log(roomId); // 68bf2b72cce908ea7bfb52d2
     if (!roomId) {
       return res.status(404).json({
         success: false,
@@ -87,6 +87,54 @@ export const fetchSpecificRoom = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "some error occured while fetching the room",
+    });
+  }
+};
+
+export const updateRoom = async (req, res) => {
+  try {
+    const { roomId } = req.params;
+    const files = req.files;
+
+    const { roomName, roomCategory, pricePerNight, amenities } = req.body;
+    // console.log(roomName, roomCategory, pricePerNight, amenities);
+
+    // push the files to the newImages array
+    const newImages = [];
+    for (let file of files) {
+      const uploadImage = await uploadMedia(file.path);
+      newImages.push(uploadImage.secure_url);
+    }
+
+    const room = await Room.findById(roomId);
+    if (!room) {
+      return res.status(404).json({
+        success: false,
+        message: "could not find room id",
+      });
+    }
+
+    const updatedData = {
+      roomName,
+      roomCategory,
+      pricePerNight,
+      amenities,
+      roomImages: newImages,
+    };
+
+    const updateRoom = await Room.findByIdAndUpdate(roomId, updatedData, {
+      new: true,
+    });
+    return res.status(200).json({
+      success: true,
+      message: "Your room has been updated",
+      updateRoom,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "failed to update the room",
     });
   }
 };

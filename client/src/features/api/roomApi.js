@@ -17,15 +17,28 @@ export const roomApi = createApi({
         body: formData,
       }),
     }),
+
     fetchSpecificRoom: builder.query({
       query: (roomId) => ({
         url: `room/${roomId}`, //  http://localhost:8080/api/v1/hotel/room/{roomId}
         method: "GET",
       }),
     }),
+
+    updateRoom: builder.mutation({
+      query: ({ roomId, formData }) => ({
+        url: `room/${roomId}`, //  http://localhost:8080/api/v1/hotel/room/{roomId}
+        method: "PUT",
+        body: formData,
+      }),
+    }),
   }),
 });
 
-export const { useAddRoomMutation, useFetchSpecificRoomQuery } = roomApi;
+export const {
+  useAddRoomMutation,
+  useFetchSpecificRoomQuery,
+  useUpdateRoomMutation,
+} = roomApi;
 
 // http://localhost:8080/api/v1/hotel/68b5a8d408f558795280138f/room/addroom

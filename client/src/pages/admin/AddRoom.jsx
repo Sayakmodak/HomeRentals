@@ -2,16 +2,21 @@ import DragandDropContainer from "@/comp/DragandDropContainer";
 import {
   useAddRoomMutation,
   useFetchSpecificRoomQuery,
+  useUpdateRoomMutation,
 } from "@/features/api/roomApi.js";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Loader2 } from "lucide-react";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 
 const AddRoom = () => {
+  const location = useLocation();
+  // console.log(location.pathname);
+  // console.log(location.pathname.includes("update-room"));
+
   const params = useParams();
   const { hotelId, roomId } = params;
-  console.log(roomId); // 68bf2b72cce908ea7bfb52d2
+  // console.log(roomId); // 68bf2b72cce908ea7bfb52d2
   // console.log("Hotel Id of Hotel Sea gull is", hotelId);  // 68b5a8d408f558795280138f
 
   const [previewImages, setPreviewImages] = useState([]); // for image preview
@@ -44,7 +49,18 @@ const AddRoom = () => {
     error: specificRoomError,
   } = useFetchSpecificRoomQuery(roomId);
 
-  console.log("data is", specificRoomData?.room);
+  const [
+    updateRoom,
+    {
+      data: updateRoomData,
+      isLoading: updateRoomIsLoading,
+      isSuccess: updateRoomIsSuccess,
+      isError: updateRoomIsError,
+      error: updateRoomError,
+    },
+  ] = useUpdateRoomMutation();
+
+  // console.log("data is", specificRoomData?.room);
 
   const room = specificRoomData?.room;
   // console.log(room.roomName);
@@ -65,7 +81,6 @@ const AddRoom = () => {
           roomName: room.roomName,
           pricePerNight: room.pricePerNight,
           roomCategory: room.roomCategory,
-          // room.amenities.
           amenities: [...prev.amenities, ...room.amenities],
         };
       })
@@ -74,7 +89,7 @@ const AddRoom = () => {
 
   const handleOnChange = (e) => {
     const { name, type, checked, value } = e.target;
-    //console.log(name, type, checked, value); // category select-one undefined Single Bed, price text false 5, checkbox checkbox true Free Wifi
+    //console.log(name, type, checked, value); // price text false 5, checkbox checkbox true Free Wifi
 
     if (type === "checkbox") {
       setAddRoomData((prev) => {
@@ -96,6 +111,7 @@ const AddRoom = () => {
     }
   };
 
+
   const handleOnClick = async () => {
     // console.log(addRoomData);
     const formData = new FormData();
@@ -114,6 +130,25 @@ const AddRoom = () => {
     await addRoom({ hotelId, formData });
   };
 
+
+  const handleUpdateRoom = async ()=>{
+    // console.log(addRoomData);
+
+    const formData = new FormData();
+    formData.append("roomName", addRoomData.roomName);
+    formData.append("roomCategory", addRoomData.roomCategory);
+    formData.append("pricePerNight", addRoomData.pricePerNight);
+    addRoomData.amenities.forEach((elm)=>{
+      formData.append("amenities", elm);
+    })
+
+    roomImages.forEach((img)=>{
+      formData.append("roomImage", img);
+    })
+    await updateRoom({roomId, formData});
+  }
+
+
   useEffect(() => {
     if (addRoomDataInfo?.message || addRoomIsSuccess) {
       toast.success(
@@ -125,18 +160,18 @@ const AddRoom = () => {
     }
   }, [addRoomIsSuccess, addRoomIsError]);
 
+  useEffect(()=>{
+    if(updateRoomIsSuccess || updateRoomData?.message){
+      toast.success(updateRoomData?.message || "Your room has been updated")
+    }
+    if(updateRoomError){
+      toast.error(updateRoomError.message || "Some error occured while updating the room");
+    }
+  }, [updateRoomIsSuccess, updateRoomIsError]);
+
   if (specificRoomIsLoading) {
     return <>Loading...</>;
   }
-
-  // useEffect(() => {
-  //   if (specificRoomIsSuccess || room){
-  //       setAddRoomData((prev)=>{
-  //         return {...prev, roomName: room.roomName}
-  //       })
-  //   }
-  //     // setAddRoomData((prev) => ({ ...prev, roomName: room.roomName }));
-  // }, [specificRoomIsSuccess]);
 
   return (
     <div className="ml-5">
@@ -146,7 +181,7 @@ const AddRoom = () => {
           Fill the details accurately and enhance the user experience.
         </p>
 
-        <p className="mb-2 text-gray-500">Upload room imgaes upto 4</p>
+        <p className="mb-2 text-gray-500">Upload room images upto 4</p>
         <DragandDropContainer
           setPreviewImages={setPreviewImages}
           setRoomImages={setRoomImages}
@@ -233,21 +268,43 @@ const AddRoom = () => {
           );
         })}
       </div>
-      <button
-        className="bg-blue-600 text-white px-8 py-2 rounded mt-8 cursor-pointer"
-        onClick={handleOnClick}
-      >
-        {addRoomIsLoading ? (
-          <>
-            <div className="flex items-center gap-2">
-              <Loader2 className="animate-spin mr-2 h-4 w-4" />
-              Please Wait...
-            </div>
-          </>
-        ) : (
-          <>Add Room</>
-        )}
-      </button>
+      {location.pathname.includes("update-room") ? (
+        <>
+          <button
+            className="bg-blue-600 text-white px-8 py-2 rounded mt-8 cursor-pointer"
+            onClick={handleUpdateRoom}
+          >
+            {updateRoomIsLoading ? (
+              <>
+                <div className="flex items-center gap-2">
+                  <Loader2 className="animate-spin mr-2 h-4 w-4" />
+                  Please Wait...
+                </div>
+              </>
+            ) : (
+              <>Update Room</>
+            )}
+          </button>
+        </>
+      ) : (
+        <>
+          <button
+            className="bg-blue-600 text-white px-8 py-2 rounded mt-8 cursor-pointer"
+            onClick={handleOnClick}
+          >
+            {addRoomIsLoading ? (
+              <>
+                <div className="flex items-center gap-2">
+                  <Loader2 className="animate-spin mr-2 h-4 w-4" />
+                  Please Wait...
+                </div>
+              </>
+            ) : (
+              <>Add Room</>
+            )}
+          </button>
+        </>
+      )}
     </div>
   );
 };
