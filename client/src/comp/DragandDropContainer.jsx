@@ -1,23 +1,41 @@
 import React from "react";
 
-const DragandDropContainer = ({ setPreviewImages, setRoomImages }) => {
-  const handleHotelImages = (e) => {
+const DragandDropContainer = ({
+  setPreviewImages,
+  setRoomImages,
+  setPreviewHotelImages,
+  type = "room"
+}) => {
+  const handleRoomImages = (e) => {
     const images = e.target.files;
     for (let i = 0; i < images.length; i++) {
       const file = images[i];
 
       const fileReader = new FileReader();
       fileReader.onloadend = () => {
-        setPreviewImages((prev) => {
-          return [...prev, { fileImage: fileReader.result }]; // base64// push { fileImage: fileReader.result } object
-        });
+        if(type === "room"){
+          setPreviewImages((prev) => {
+            return [...prev, { fileImage: fileReader.result }]; // base64// push { fileImage: fileReader.result } object
+          });
+          setRoomImages((prev) => {
+            // return [...prev, { roomImages: file }]; means -> roomImages = [{ roomImages: file }]
+            return [...prev, file]; // push file
+          });
+        }
+        else{
+          setPreviewHotelImages((prev)=>{
+            return [...prev, {fileImage: fileReader.result}];
+          });
+
+        }
       };
+
       fileReader.readAsDataURL(file);
 
-      setRoomImages((prev) => {
-        // return [...prev, { roomImages: file }]; means -> roomImages = [{ roomImages: file }]
-        return [...prev, file];  // push file
-      });
+      // setRoomImages((prev) => {
+      //   // return [...prev, { roomImages: file }]; means -> roomImages = [{ roomImages: file }]
+      //   return [...prev, file]; // push file
+      // });
     }
   };
 
@@ -58,7 +76,7 @@ const DragandDropContainer = ({ setPreviewImages, setRoomImages }) => {
           className="hidden"
           multiple
           accept="image/*"
-          onChange={handleHotelImages}
+          onChange={handleRoomImages}
         />
         <p className="text-xs text-slate-400 mt-2">
           PNG, JPG SVG, WEBP, and GIF are Allowed.

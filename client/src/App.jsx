@@ -15,6 +15,7 @@ import AddRoom from "./pages/admin/AddRoom";
 import ListRoom from "./pages/admin/ListRoom";
 import AllHotelsList from "./pages/admin/AllHotelsList";
 import AllRooms from "./pages/admin/AllRooms";
+import EditHotel from "./pages/admin/EditHotel";
 
 
 const router = createBrowserRouter([
@@ -60,7 +61,10 @@ const router = createBrowserRouter([
       {
         path: "edit-hotel/:hotelId/addroom",
         element: <AddRoom />,
-        // element: <AllRooms />
+      },
+      {
+        path: "edit-hotel/:hotelId/update-hotel",
+        element: <EditHotel />,
       },
       {
         path: "list-room",

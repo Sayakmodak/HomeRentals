@@ -135,6 +135,9 @@ const HotelDetail = () => {
           </div>
         </div>
       </div>
+
+      {/* all room cards will be here after clicking it, will be redirected to the room detail page */}
+      
     </div>
   );
 };

@@ -185,6 +185,7 @@ const AddRoom = () => {
         <DragandDropContainer
           setPreviewImages={setPreviewImages}
           setRoomImages={setRoomImages}
+          type="room"
         />
       </form>
       {previewImages.length > 0 && (

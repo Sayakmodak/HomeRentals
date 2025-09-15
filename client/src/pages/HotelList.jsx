@@ -23,6 +23,8 @@ const categories = [
   {id: "luxury room", label: "Luxury Room"},
 ]
 
+// all hotels will be listed here
+
 const HotelList = () => {
   const navigate = useNavigate();
 

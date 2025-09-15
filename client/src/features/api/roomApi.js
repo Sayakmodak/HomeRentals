@@ -40,5 +40,3 @@ export const {
   useFetchSpecificRoomQuery,
   useUpdateRoomMutation,
 } = roomApi;
-
-// http://localhost:8080/api/v1/hotel/68b5a8d408f558795280138f/room/addroom
