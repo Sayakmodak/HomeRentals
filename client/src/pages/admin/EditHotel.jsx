@@ -1,15 +1,14 @@
 import DragandDropContainer from "@/comp/DragandDropContainer";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { Loader2, ReceiptTurkishLira } from "lucide-react";
-import { data, useParams } from "react-router-dom";
+import { Loader2 } from "lucide-react";
+import { useParams } from "react-router-dom";
 import {
   useGetHotelByIdQuery,
   useUpdateHotelMutation,
 } from "@/features/api/hotelApi";
 
 const EditHotel = () => {
-  const loading = false;
   const params = useParams();
   const { hotelId } = params;
   // console.log(hotelId);
@@ -53,7 +52,21 @@ const EditHotel = () => {
     "Extra Services",
   ];
 
-  const handleUpdateHotel = (e) => {
+  useEffect(() => {
+    if (getHotelByIddata?.hotel) {
+      // when the getHotelByIddata?.hotel is available
+      setUpdateHotelInfo((prev) => {
+        return {
+          ...prev,
+          hotelName: hotel.hotelName,
+          hotelCategory: hotel.hotelCategory,
+        };
+      });
+    }
+  }, [hotel]);
+
+
+  const handleUpdateHotelOnChange = (e) => {
     const { name, type, checked, value } = e.target;
     // console.log(name, type, checked, value);
 
@@ -78,24 +91,9 @@ const EditHotel = () => {
         return { ...prev, [name]: value };
       });
     }
-  };
+  };  
 
-  useEffect(() => {
-    if (getHotelByIddata?.hotel) {
-      setUpdateHotelInfo((prev) => {
-        return {
-          ...prev,
-          hotelName: hotel.hotelName,
-          hotelCategory: hotel.hotelCategory,
-        };
-      });
-    }
-  }, [hotel]);
-
-  if (getHotelByIdIsloading) {
-    return <>Loading...</>;
-  }
-
+  // always check all the data is available or not from the API
   const updateHotelOnClick = async () => {
     // console.log(updateHotelInfo);
     const formData = new FormData();
@@ -113,6 +111,19 @@ const EditHotel = () => {
 
     await updateHotel({ hotelId, formData });
   };
+
+  useEffect(()=>{
+    if(isSuccess || data){
+      toast.success(data.message || "Your hotel has been updated");
+    }
+    if(isError){
+      toast.error(error.message || "Some error occured");
+    }
+  }, [data, isSuccess, isError]);
+
+  if (getHotelByIdIsloading) {
+    return <>Loading...</>;
+  }
 
   return (
     <div className="ml-5">
@@ -153,7 +164,7 @@ const EditHotel = () => {
           className="border border-gray-300 mt-1 rounded p-2 w-50"
           name="hotelName"
           value={updateHotelInfo.hotelName}
-          onChange={handleUpdateHotel}
+          onChange={handleUpdateHotelOnChange}
         />
       </div>
 
@@ -166,7 +177,7 @@ const EditHotel = () => {
           className="border border-gray-300 mt-1 rounded p-2 w-70"
           name="hotelSubtitle"
           value={updateHotelInfo.hotelSubtitle}
-          onChange={handleUpdateHotel}
+          onChange={handleUpdateHotelOnChange}
         />
       </div>
 
@@ -178,7 +189,7 @@ const EditHotel = () => {
             id=""
             className="border opacity-70 border-gray-300 mt-1 rounded p-2 w-full"
             name="hotelCategory"
-            onChange={handleUpdateHotel}
+            onChange={handleUpdateHotelOnChange}
             value={updateHotelInfo.hotelCategory}
           >
             <option value="">Select Hotel Type</option>
@@ -204,7 +215,7 @@ const EditHotel = () => {
                 id={elm}
                 name="checkbox"
                 // checked={addRoomData.amenities.includes(elm)}
-                onChange={handleUpdateHotel}
+                onChange={handleUpdateHotelOnChange}
                 value={elm}
               />
               <label htmlFor={elm}>{elm}</label>
@@ -218,7 +229,7 @@ const EditHotel = () => {
           className="bg-blue-600 text-white px-8 py-2 rounded mt-8 cursor-pointer"
           onClick={updateHotelOnClick}
         >
-          {loading ? (
+          {isLoading ? (
             <>
               <div className="flex items-center gap-2">
                 <Loader2 className="animate-spin mr-2 h-4 w-4" />
