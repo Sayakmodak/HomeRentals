@@ -2,10 +2,18 @@ import DragandDropContainer from "@/comp/DragandDropContainer";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Loader2, ReceiptTurkishLira } from "lucide-react";
-import { useLocation, useParams } from "react-router-dom";
+import { data, useParams } from "react-router-dom";
+import {
+  useGetHotelByIdQuery,
+  useUpdateHotelMutation,
+} from "@/features/api/hotelApi";
 
 const EditHotel = () => {
   const loading = false;
+  const params = useParams();
+  const { hotelId } = params;
+  // console.log(hotelId);
+
   const [updateHotelInfo, setUpdateHotelInfo] = useState({
     hotelName: "",
     hotelSubtitle: "",
@@ -15,6 +23,18 @@ const EditHotel = () => {
 
   const [previewHotelImages, setPreviewHotelImages] = useState([]);
   const [hotelImages, setHotelImages] = useState([]);
+
+  const {
+    data: getHotelByIddata,
+    isLoading: getHotelByIdIsloading,
+    isError: getHotelByIdIserror,
+    error: getHotelByIdError,
+  } = useGetHotelByIdQuery(hotelId);
+
+  const [updateHotel, { data, isLoading, isSuccess, isError, error }] =
+    useUpdateHotelMutation();
+
+  const hotel = getHotelByIddata?.hotel;
 
   const hotelCategories = [
     "Luxury Stays",
@@ -33,33 +53,66 @@ const EditHotel = () => {
     "Extra Services",
   ];
 
-  const handleUpdateHotel = (e) =>{
-    const {name, type, checked, value} = e.target;
+  const handleUpdateHotel = (e) => {
+    const { name, type, checked, value } = e.target;
     // console.log(name, type, checked, value);
 
-    if(type === "checkbox"){
+    if (type === "checkbox") {
       // add to the amenities array
-      if(checked){
-        setUpdateHotelInfo((prev)=>{
-          return {...prev, amenities: [...prev.amenities, value]};
-        })
+      if (checked) {
+        setUpdateHotelInfo((prev) => {
+          return { ...prev, amenities: [...prev.amenities, value] };
+        });
       }
       // remove from the amenities array
-      else{
-        setUpdateHotelInfo((prev)=>{
-          return {...prev, amenities: [...prev.amenities.filter((elm)=> elm !== value)]};
-        })
+      else {
+        setUpdateHotelInfo((prev) => {
+          return {
+            ...prev,
+            amenities: [...prev.amenities.filter((elm) => elm !== value)],
+          };
+        });
       }
-    }else{
-      setUpdateHotelInfo((prev)=>{
-        return {...prev, [name]: value};
-      })
+    } else {
+      setUpdateHotelInfo((prev) => {
+        return { ...prev, [name]: value };
+      });
     }
+  };
+
+  useEffect(() => {
+    if (getHotelByIddata?.hotel) {
+      setUpdateHotelInfo((prev) => {
+        return {
+          ...prev,
+          hotelName: hotel.hotelName,
+          hotelCategory: hotel.hotelCategory,
+        };
+      });
+    }
+  }, [hotel]);
+
+  if (getHotelByIdIsloading) {
+    return <>Loading...</>;
   }
 
-  const updateHotelOnClick = () =>{
-    console.log(updateHotelInfo);
-  }
+  const updateHotelOnClick = async () => {
+    // console.log(updateHotelInfo);
+    const formData = new FormData();
+    formData.append("hotelName", updateHotelInfo?.hotelName);
+    formData.append("hotelSubtitle", updateHotelInfo?.hotelSubtitle);
+    formData.append("hotelCategory", updateHotelInfo?.hotelCategory);
+
+    updateHotelInfo.amenities.forEach((elm) => {
+      formData.append("amenities", elm);
+    });
+
+    hotelImages.forEach((elm) => {
+      formData.append("hotelImages", elm);
+    });
+
+    await updateHotel({ hotelId, formData });
+  };
 
   return (
     <div className="ml-5">
@@ -73,7 +126,7 @@ const EditHotel = () => {
         <DragandDropContainer
           type="hotel"
           setPreviewHotelImages={setPreviewHotelImages}
-          // setHotelImages={setHotelImages}
+          setHotelImages={setHotelImages}
         />
       </form>
       {previewHotelImages.length > 0 && (

@@ -24,7 +24,27 @@ export const hotelApi = createApi({
         method: "GET",
       }),
     }),
+
+    getHotelById: builder.query({
+      query: (hotelId) => ({
+        url: `hotel/${hotelId}`, //  http://localhost:8080/api/v1/hotel/hotel/:hotelId
+        method: "GET",
+      }),
+    }),
+
+    updateHotel: builder.mutation({
+      query: ({ hotelId, formData }) => ({
+        url: `update-hotel/${hotelId}`, //  http://localhost:8080/api/v1/hotel/update-hotel/:hotelId
+        method: "PUT",
+        body: formData,
+      }),
+    }),
   }),
 });
 
-export const { useAddHotelMutation, useListHotelsQuery } = hotelApi;
+export const {
+  useAddHotelMutation,
+  useListHotelsQuery,
+  useGetHotelByIdQuery,
+  useUpdateHotelMutation,
+} = hotelApi;

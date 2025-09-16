@@ -4,6 +4,7 @@ const DragandDropContainer = ({
   setPreviewImages,
   setRoomImages,
   setPreviewHotelImages,
+  setHotelImages,
   type = "room"
 }) => {
   const handleRoomImages = (e) => {
@@ -26,7 +27,10 @@ const DragandDropContainer = ({
           setPreviewHotelImages((prev)=>{
             return [...prev, {fileImage: fileReader.result}];
           });
-
+          // push the original file
+          setHotelImages((prev)=>{
+            return [...prev, file];
+          })
         }
       };
 

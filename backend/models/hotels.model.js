@@ -44,9 +44,10 @@ const hotels = new mongoose.Schema(
       type: Boolean,
     },
     hotelImages: {
-      type: Array,
+      type: [String],
       // required: true,
     },
+    hotelAmenities: [{ type: String }], // array of objects
     rating: {
       type: String,
     },
