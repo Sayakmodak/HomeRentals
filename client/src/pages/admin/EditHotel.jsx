@@ -1,12 +1,14 @@
 import DragandDropContainer from "@/comp/DragandDropContainer";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { Loader2 } from "lucide-react";
+import { Loader2, Wifi } from "lucide-react";
 import { useParams } from "react-router-dom";
 import {
   useGetHotelByIdQuery,
   useUpdateHotelMutation,
 } from "@/features/api/hotelApi";
+import { Editor } from "primereact/editor";
+import RichTextEditor from "@/comp/RichTextEditor";
 
 const EditHotel = () => {
   const params = useParams();
@@ -16,9 +18,10 @@ const EditHotel = () => {
   const [updateHotelInfo, setUpdateHotelInfo] = useState({
     hotelName: "",
     hotelSubtitle: "",
+    description: "",
     hotelCategory: "",
     amenities: [],
-  });
+  });   
 
   const [previewHotelImages, setPreviewHotelImages] = useState([]);
   const [hotelImages, setHotelImages] = useState([]);
@@ -68,7 +71,10 @@ const EditHotel = () => {
 
   const handleUpdateHotelOnChange = (e) => {
     const { name, type, checked, value } = e.target;
-    // console.log(name, type, checked, value);
+    // const descValue = e.htmlValue;
+    console.log(name, type, checked, value);
+
+    // console.log(descValue);
 
     if (type === "checkbox") {
       // add to the amenities array
@@ -86,7 +92,13 @@ const EditHotel = () => {
           };
         });
       }
-    } else {
+    }
+    // else if(name === "description"){
+    //   setUpdateHotelInfo((prev)=>{
+    //     return {...prev, description: descValue};
+    //   })
+    // }
+     else {
       setUpdateHotelInfo((prev) => {
         return { ...prev, [name]: value };
       });
@@ -179,6 +191,12 @@ const EditHotel = () => {
           value={updateHotelInfo.hotelSubtitle}
           onChange={handleUpdateHotelOnChange}
         />
+      </div>
+
+      {/* Hotel Description */}
+      <div>
+        <p className="mt-4 text-gray-500">Description</p>
+        <RichTextEditor updateHotelInfo={updateHotelInfo} setUpdateHotelInfo={setUpdateHotelInfo} name="desc" style={{height: "320px"}}/>
       </div>
 
       {/* Hotel type */}

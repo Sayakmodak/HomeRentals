@@ -16,6 +16,7 @@ import ListRoom from "./pages/admin/ListRoom";
 import AllHotelsList from "./pages/admin/AllHotelsList";
 import AllRooms from "./pages/admin/AllRooms";
 import EditHotel from "./pages/admin/EditHotel";
+import { PrimeReactProvider } from "primereact/api";
 
 
 const router = createBrowserRouter([
@@ -81,9 +82,11 @@ const router = createBrowserRouter([
 function App() {
   return (
     <>
-      <Provider store={store}>
-        <RouterProvider router={router} />
-      </Provider>
+      <PrimeReactProvider>
+        <Provider store={store}>
+          <RouterProvider router={router} />
+        </Provider>
+      </PrimeReactProvider>
     </>
   );
 }
