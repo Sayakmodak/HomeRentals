@@ -10,6 +10,9 @@ const room = new mongoose.Schema(
       type: String,
       required: true,
     },
+    roomDesc: {
+      type: String,
+    },
     roomImages: {
       // now, roomImages is an array of strings
       type: [String],

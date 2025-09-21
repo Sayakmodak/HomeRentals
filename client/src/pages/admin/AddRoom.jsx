@@ -8,22 +8,22 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Loader2 } from "lucide-react";
 import { useLocation, useParams } from "react-router-dom";
+import RichTextEditor from "@/comp/RichTextEditor";
 
 const AddRoom = () => {
   const location = useLocation();
   // console.log(location.pathname);
-  // console.log(location.pathname.includes("update-room"));
 
   const params = useParams();
   const { hotelId, roomId } = params;
   // console.log(roomId); // 68bf2b72cce908ea7bfb52d2
-  // console.log("Hotel Id of Hotel Sea gull is", hotelId);  // 68b5a8d408f558795280138f
 
   const [previewImages, setPreviewImages] = useState([]); // for image preview
-  // console.log(previewImages);    array of objects for this line -> return [...prev, { fileImage: fileReader.result }];
+  // console.log(previewImages);
 
   const [addRoomData, setAddRoomData] = useState({
     roomName: "",
+    description: "",
     roomCategory: "",
     pricePerNight: "",
     amenities: [],
@@ -116,6 +116,7 @@ const AddRoom = () => {
     // console.log(addRoomData);
     const formData = new FormData();
     formData.append("roomName", addRoomData.roomName);
+    formData.append("description", addRoomData.description);
     formData.append("roomCategory", addRoomData.roomCategory);
     formData.append("pricePerNight", addRoomData.pricePerNight);
 
@@ -136,6 +137,7 @@ const AddRoom = () => {
 
     const formData = new FormData();
     formData.append("roomName", addRoomData.roomName);
+    formData.append("description", addRoomData.description);
     formData.append("roomCategory", addRoomData.roomCategory);
     formData.append("pricePerNight", addRoomData.pricePerNight);
     addRoomData.amenities.forEach((elm)=>{
@@ -202,6 +204,7 @@ const AddRoom = () => {
           })}
         </div>
       )}
+      
       {/* Room Name */}
       <div>
         <p className="mt-4 text-gray-500">Room Name</p>
@@ -213,6 +216,12 @@ const AddRoom = () => {
           value={addRoomData.roomName}
           onChange={handleOnChange}
         />
+      </div>
+
+      {/* Description */}
+      <div>
+        <p className="mt-4 text-gray-500">Description</p>
+        <RichTextEditor addRoomData={addRoomData} setAddRoomData={setAddRoomData} type={"addRoom"}/>
       </div>
 
       {/* Room type */}

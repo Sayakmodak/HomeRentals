@@ -67,9 +67,11 @@ export const listHotels = async (req, res) => {
 export const getHotelById = async (req, res) => {
   try {
     const { hotelId } = req.params;
-    console.log(hotelId);
+    // console.log(hotelId);
 
-    const hotel = await Hotels.findById(hotelId);
+    const hotel = await Hotels.findById(hotelId)
+      .populate({ path: "rooms" })
+      .populate({ path: "owner" });
     if (!hotel) {
       return res.status(404).json({
         success: false,
@@ -92,8 +94,9 @@ export const getHotelById = async (req, res) => {
 export const updateHotel = async (req, res) => {
   try {
     const { hotelId } = req.params;
-    const { hotelName, hotelSubtitle, hotelCategory, amenities } = req.body;
-    // console.log(hotelName, hotelSubtitle, hotelCategory, amenities);
+    const { hotelName, hotelSubtitle, description, hotelCategory, amenities } =
+      req.body;
+    // console.log(hotelName, hotelSubtitle, description, hotelCategory, amenities);
 
     const files = req.files; // files from the Edit Hotel page image
 
@@ -113,8 +116,10 @@ export const updateHotel = async (req, res) => {
     }
 
     const updatedHotelInfo = {
+      // same name must as the DB
       hotelName: hotelName,
       hotelSubtitle: hotelSubtitle,
+      hotelDesc: description,
       hotelCategory: hotelCategory,
       hotelAmenities: amenities,
       hotelImages: hotelImages,

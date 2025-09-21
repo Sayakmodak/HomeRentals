@@ -1,70 +1,138 @@
-import React from "react";
-import { MapPin, StarIcon, Wifi } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import {
+  CarFrontIcon,
+  DogIcon,
+  Hotel,
+  MapPin,
+  Rows4,
+  StarIcon,
+  User2,
+} from "lucide-react";
 import homeImg from "../assets/home.jpeg";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import RoomCard from "@/comp/RoomCard";
+import { useGetHotelByIdQuery } from "@/features/api/hotelApi";
+import { useParams } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+
+const hotelAmenityIcons = {
+  "Self parking included": <CarFrontIcon size={16} />,
+  "Pets Allowed": <DogIcon size={16} />,
+  "Restaurant": <Hotel size={16} />,
+  "Family Friendly": <User2 size={16} />,
+  "Extra Services": <Rows4 size={16} />,
+};
 
 const HotelDetail = () => {
+  const params = useParams();
+  const { hotelId } = params;
+  const [mainImage, setMainImage] = useState();
+  const { data, isLoading, isSuccess, isError, error } =
+    useGetHotelByIdQuery(hotelId);
+
+  const hotel = data?.hotel;
+
+  // as soon as the page renders the first hotel image should be set as the main image
+  useEffect(() => {
+    //  if (hotel?.hotelImages?.length > 0) {
+    // }
+    setMainImage(hotel?.hotelImages[0]);
+  }, [hotel]);
+
+  const setFocusImage = (img) => {
+    setMainImage(img);
+  };
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
   return (
     <div className="py-28 md:py-35 px-4 md:px-16 lg:px-24 xl:px-32">
       {/* Room Details */}
       <div className="flex flex-col md:flex-row items-start md:items-center gap-2">
         <h1 className="text-3xl md:text-4xl">
-          hotel name <span className="text-sm">room type</span>
+          {hotel.hotelName || "hotel name"}{" "}
+          <span className="text-sm">{hotel.hotelCategory || "room type"}</span>
         </h1>
         <p className="text-xs py-1.5 px-3 rounded-full text-white bg-orange-500">
           20% off
         </p>
       </div>
+
       {/* Rating */}
       <div className="flex items-center gap-1 mt-2">
         <StarIcon size={15} />
         <p className="ml-2">200+ reviews</p>
       </div>
+
       {/* Room address */}
       <div className="flex items-center gap-1 text-gray-500 mt-2">
         <MapPin size={15} />
-        <span>hotel address</span>
+        <span>{hotel.address || "address"}</span>
       </div>
+
       {/* Room images */}
       <div className="flex flex-col lg:flex-row mt-6 gap-6">
         <div className="lg:w-1/2 w-full">
+          {/* Main Image */}
+          {/* {mainImage && ( */}
           <img
-            src={homeImg}
+            src={mainImage}
             alt="mainHomeImg"
             className="w-full rounded-xl shadow-lg object-cover"
           />
+          {/* )} */}
         </div>
         <div className="grid grid-cols-2 gap-4 lg:w-1/2 w-full">
-          {Array.from({ length: 3 }).map((elm, index) => (
+          {hotel?.hotelImages?.map((elm, index) => (
             <img
-              src={homeImg}
+              onClick={() => setFocusImage(elm)}
+              key={index}
+              src={elm}
               alt="Room Image"
-              className={`w-full rounded-xl shadow-md object-cover cursor-pointer`}
+              className={`w-full rounded-xl shadow-md object-cover cursor-pointer ${
+                elm === mainImage ? "ring-2" : ""
+              }`}
             />
           ))}
         </div>
       </div>
 
-      {/* Room Highliights */}
+      {/* Room Highlights */}
       <div className="flex flex-col md:flex-row md:justify-between mt-10">
         <div className="flex flex-col">
           <h1 className="text-3xl md:text-4xl">
-            Experience Luxury Like Never Before
+            {hotel.hotelSubtitle
+              .toLowerCase()
+              .split(" ")
+              .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+              .join(" ") || "Experience Luxury Like Never Before"}
           </h1>
           <div className="flex flex-wrap items-center mt-3 mb-6 gap-4">
-            <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-100">
-              <Wifi />
-              <p className="text-xs">Free Wifi</p>
-            </div>
-            <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-100">
-              <Wifi />
-              <p className="text-xs">Free Wifi</p>
-            </div>
+            {hotel.hotelAmenities.map((elm, index) => {
+              return (
+                <div
+                  className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-100"
+                  key={index}
+                >
+                  {hotelAmenityIcons[elm]}
+                  <p className="text-xs">{elm}</p>
+                </div>
+              );
+            })}
           </div>
         </div>
+
         {/* Room Price */}
         <p className="text-2xl font-medium">$450 /night</p>
       </div>
+
+      {/* Hotel Descripiton */}
+      <div
+        className="border border-gray-300 w-[1000px] rounded-lg bg-[#F5F8FB] p-3 mt-5 shadow-sm"
+        dangerouslySetInnerHTML={{ __html: hotel.hotelDesc }}
+      />
 
       {/* Checkin Checkout form */}
       <form
@@ -124,20 +192,58 @@ const HotelDetail = () => {
         <div className="flex gap-4">
           <Avatar className="h-9 w-9">
             <AvatarImage
-              src={"https://github.com/shadcn.png"}
+              src={hotel?.owner?.profileImg || "https://github.com/shadcn.png"}
               alt="@shadcn"
               // className="h-10 w-10"
             />
             <AvatarFallback className="text-lg">CN</AvatarFallback>
           </Avatar>
           <div className="text-lg md:text-xl">
-            <p>Hosted by (owner name)</p>
+            <p>
+              Hosted by{" "}
+              {hotel.owner.name
+                .toLowerCase()
+                .split(" ")
+                .map((word) => word.charAt(0).toUpperCase() + word.slice(1))}
+            </p>
           </div>
         </div>
       </div>
 
       {/* all room cards will be here after clicking it, will be redirected to the room detail page */}
-      
+
+      {hotel.rooms.length > 0 && (
+        <div className="bg-[#f5f8fb] pt-20 flex items-center flex-col pb-10 mt-10">
+          <div className="text-center mb-5">
+            <h1 className="text-3xl font-bold text-[#252525]">
+              Choose Your Rooms
+            </h1>
+            <p className="text-[#888a8c] mt-3">
+              Discover our handpicked and exceptional properties around the{" "}
+              <br />
+              world, offering unparalleled luxury
+            </p>
+          </div>
+          <div className="flex items-center mb-5 p-2 gap-5">
+            {hotel.rooms.map((elm, index) => {
+              return (
+                <RoomCard
+                  key={index}
+                  roomId={elm._id}
+                  roomAddress={hotel.address}
+                />
+              );
+            })}
+          </div>
+          <Button
+            variant={"outline"}
+            className="mt-8 cursor-pointer"
+            onClick={() => navigate("/hotels")}
+          >
+            View All Rooms
+          </Button>
+        </div>
+      )}
     </div>
   );
 };

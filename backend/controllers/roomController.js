@@ -96,7 +96,8 @@ export const updateRoom = async (req, res) => {
     const { roomId } = req.params;
     const files = req.files;
 
-    const { roomName, roomCategory, pricePerNight, amenities } = req.body;
+    const { roomName, description, roomCategory, pricePerNight, amenities } =
+      req.body;
     // console.log(roomName, roomCategory, pricePerNight, amenities);
 
     // push the files to the newImages array
@@ -116,6 +117,7 @@ export const updateRoom = async (req, res) => {
 
     const updatedData = {
       roomName,
+      roomDesc: description,
       roomCategory,
       pricePerNight,
       amenities,

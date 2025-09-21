@@ -82,16 +82,16 @@ const HotelList = () => {
                 title="View room details"
                 className="max-h-65 md:w-1/2 shadow-lg object-cover cursor-pointer"
                 onClick={() => {
-                  navigate(`/hotel/${id}`);
+                  navigate(`/hotel/${room._id}`);
                   scrollTo(0, 0);
                 }}
               />
-              <div className="md:1/2 flex flex-col gap-2  py-2 border-red-500">
+              <div className="md:1/2 flex flex-col gap-2 py-2 border-red-500">
                 {/* <p className="text-gray-500">city</p> */}
                 <p
                   className="text-gray-800 text-3xl cursor-pointer"
                   onClick={() => {
-                    navigate(`/hotel/${id}`);
+                    navigate(`/hotel/${room._id}`);
                     scrollTo(0, 0);
                   }}
                 >
@@ -107,21 +107,18 @@ const HotelList = () => {
                 </div>
 
                 {/* Room amenities */}
-                <div className="flex flex-wrap items-center mt-4 gap-4">
-                  <div className="flex items-center gap-2 px-3 rounded bg-[#f5f5f5]/70">
-                    {room?.hotelAmenities.map((elm, index) => {
-                      return (
-                        <p
-                          className="text-[16px] flex items-center gap-1 p-[2px]"
-                          key={index}
-                        >
-                          {amenityIcons[elm]}
-                          {elm}
+                {
+                  room?.hotelAmenities.map((elm, index)=>{
+                    return (
+                      <div key={index} className="flex items-center gap-2 px-3 rounded-lg bg-[#f5f5f5]/70">
+                        <p className="text-[16px] flex items-center gap-1 p-[2px]" key={index}>
+                            {amenityIcons[elm]}
+                            {elm}
                         </p>
-                      );
-                    })}
-                  </div>
-                </div>
+                      </div>
+                    );
+                  })
+                }
 
                 <div className="mt-10 flex items-center gap-1 text-gray-500 text-sm">
                   <StarIcon size={15} />

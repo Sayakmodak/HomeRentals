@@ -2,7 +2,6 @@ import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Signup from "./pages/Signup";
 import Layout from "./mainLayout/Layout";
-import Contact from "./pages/Contact";
 import HomePage from "./comp/HomePage";
 import { store } from "./app/store";
 import { Provider } from "react-redux";
@@ -14,9 +13,9 @@ import Dashboard from "./pages/admin/Dashboard";
 import AddRoom from "./pages/admin/AddRoom";
 import ListRoom from "./pages/admin/ListRoom";
 import AllHotelsList from "./pages/admin/AllHotelsList";
-import AllRooms from "./pages/admin/AllRooms";
 import EditHotel from "./pages/admin/EditHotel";
 import { PrimeReactProvider } from "primereact/api";
+import RoomDetailPage from "./pages/RoomDetailPage";
 
 
 const router = createBrowserRouter([
@@ -42,9 +41,13 @@ const router = createBrowserRouter([
         element: <HotelList />,
       },
       {
-        path: "/hotel/:id",
+        path: "/hotel/:hotelId",
         element: <HotelDetail />,
       },
+      {
+        path: "/hotel/:hotelId/room/:roomId",
+        element: <RoomDetailPage />
+      }
     ],
   },
   {

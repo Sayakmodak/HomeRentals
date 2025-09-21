@@ -1,13 +1,12 @@
 import DragandDropContainer from "@/comp/DragandDropContainer";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { Loader2, Wifi } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { useParams } from "react-router-dom";
 import {
   useGetHotelByIdQuery,
   useUpdateHotelMutation,
 } from "@/features/api/hotelApi";
-import { Editor } from "primereact/editor";
 import RichTextEditor from "@/comp/RichTextEditor";
 
 const EditHotel = () => {
@@ -21,7 +20,7 @@ const EditHotel = () => {
     description: "",
     hotelCategory: "",
     amenities: [],
-  });   
+  });   // will be accepted to the req.body 
 
   const [previewHotelImages, setPreviewHotelImages] = useState([]);
   const [hotelImages, setHotelImages] = useState([]);
@@ -93,11 +92,6 @@ const EditHotel = () => {
         });
       }
     }
-    // else if(name === "description"){
-    //   setUpdateHotelInfo((prev)=>{
-    //     return {...prev, description: descValue};
-    //   })
-    // }
      else {
       setUpdateHotelInfo((prev) => {
         return { ...prev, [name]: value };
@@ -112,6 +106,7 @@ const EditHotel = () => {
     formData.append("hotelName", updateHotelInfo?.hotelName);
     formData.append("hotelSubtitle", updateHotelInfo?.hotelSubtitle);
     formData.append("hotelCategory", updateHotelInfo?.hotelCategory);
+    formData.append("description", updateHotelInfo?.description);
 
     updateHotelInfo.amenities.forEach((elm) => {
       formData.append("amenities", elm);
@@ -196,7 +191,7 @@ const EditHotel = () => {
       {/* Hotel Description */}
       <div>
         <p className="mt-4 text-gray-500">Description</p>
-        <RichTextEditor updateHotelInfo={updateHotelInfo} setUpdateHotelInfo={setUpdateHotelInfo} name="desc" style={{height: "320px"}}/>
+        <RichTextEditor updateHotelInfo={updateHotelInfo} setUpdateHotelInfo={setUpdateHotelInfo} type={"editHotel"} />
       </div>
 
       {/* Hotel type */}
@@ -232,7 +227,7 @@ const EditHotel = () => {
                 type="checkbox"
                 id={elm}
                 name="checkbox"
-                // checked={addRoomData.amenities.includes(elm)}
+                checked={updateHotelInfo.amenities.includes(elm)}
                 onChange={handleUpdateHotelOnChange}
                 value={elm}
               />
