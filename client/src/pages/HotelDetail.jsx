@@ -8,7 +8,6 @@ import {
   StarIcon,
   User2,
 } from "lucide-react";
-import homeImg from "../assets/home.jpeg";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import RoomCard from "@/comp/RoomCard";
 import { useGetHotelByIdQuery } from "@/features/api/hotelApi";
@@ -75,14 +74,11 @@ const HotelDetail = () => {
       {/* Room images */}
       <div className="flex flex-col lg:flex-row mt-6 gap-6">
         <div className="lg:w-1/2 w-full">
-          {/* Main Image */}
-          {/* {mainImage && ( */}
           <img
             src={mainImage}
             alt="mainHomeImg"
             className="w-full rounded-xl shadow-lg object-cover"
           />
-          {/* )} */}
         </div>
         <div className="grid grid-cols-2 gap-4 lg:w-1/2 w-full">
           {hotel?.hotelImages?.map((elm, index) => (
@@ -92,7 +88,7 @@ const HotelDetail = () => {
               src={elm}
               alt="Room Image"
               className={`w-full rounded-xl shadow-md object-cover cursor-pointer ${
-                elm === mainImage ? "ring-2" : ""
+                elm === mainImage ? "border border-blue-500" : ""
               }`}
             />
           ))}
@@ -103,8 +99,8 @@ const HotelDetail = () => {
       <div className="flex flex-col md:flex-row md:justify-between mt-10">
         <div className="flex flex-col">
           <h1 className="text-3xl md:text-4xl">
-            {hotel.hotelSubtitle
-              .toLowerCase()
+            {hotel?.hotelSubtitle
+              ?.toLowerCase()
               .split(" ")
               .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
               .join(" ") || "Experience Luxury Like Never Before"}
@@ -200,8 +196,8 @@ const HotelDetail = () => {
           </Avatar>
           <div className="text-lg md:text-xl">
             <p>
-              Hosted by{" "}
-              {hotel.owner.name
+              Hosted by <span> </span>
+              {hotel?.owner?.name
                 .toLowerCase()
                 .split(" ")
                 .map((word) => word.charAt(0).toUpperCase() + word.slice(1))}
@@ -211,7 +207,6 @@ const HotelDetail = () => {
       </div>
 
       {/* all room cards will be here after clicking it, will be redirected to the room detail page */}
-
       {hotel.rooms.length > 0 && (
         <div className="bg-[#f5f8fb] pt-20 flex items-center flex-col pb-10 mt-10">
           <div className="text-center mb-5">
@@ -230,7 +225,9 @@ const HotelDetail = () => {
                 <RoomCard
                   key={index}
                   roomId={elm._id}
-                  roomAddress={hotel.address}
+                  roomName={elm.roomName}
+                  address={hotel.address}
+                  pricePerNight={elm.pricePerNight}
                 />
               );
             })}

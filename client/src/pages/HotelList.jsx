@@ -74,20 +74,19 @@ const HotelList = () => {
           return (
             <div
               key={id}
-              className="flex flex-col md:flex-row items-start gap-6 border rounded-2xl border-gray-300 my-5 overflow-hidden w-[900px]"
+              className="flex flex-col md:flex-row items-start gap-6 rounded-2xl border-gray-300 my-5 overflow-hidden w-[900px] border"
             >
               <img
                 src={room?.hotelImages[0]}
                 alt="hotel-img"
                 title="View room details"
-                className="max-h-65 md:w-1/2 shadow-lg object-cover cursor-pointer"
+                className="md:w-1/2 shadow-lg object-cover cursor-pointer"
                 onClick={() => {
                   navigate(`/hotel/${room._id}`);
                   scrollTo(0, 0);
                 }}
               />
               <div className="md:1/2 flex flex-col gap-2 py-2 border-red-500">
-                {/* <p className="text-gray-500">city</p> */}
                 <p
                   className="text-gray-800 text-3xl cursor-pointer"
                   onClick={() => {
@@ -107,28 +106,27 @@ const HotelList = () => {
                 </div>
 
                 {/* Room amenities */}
-                {
-                  room?.hotelAmenities.map((elm, index)=>{
-                    return (
-                      <div key={index} className="flex items-center gap-2 px-3 rounded-lg bg-[#f5f5f5]/70">
-                        <p className="text-[16px] flex items-center gap-1 p-[2px]" key={index}>
-                            {amenityIcons[elm]}
-                            {elm}
-                        </p>
-                      </div>
-                    );
-                  })
-                }
+                {room?.hotelAmenities.map((elm, index) => {
+                  return (
+                    <span
+                      key={index}
+                      className="flex items-center gap-2 px-3 rounded-lg border border-gray-300 bg-[#f5f5f5]/70"
+                    >
+                      <p
+                        className="text-[16px] flex items-center gap-1 p-[2px]"
+                        key={index}
+                      >
+                        {amenityIcons[elm]}
+                        {elm}
+                      </p>
+                    </span>
+                  );
+                })}
 
-                <div className="mt-10 flex items-center gap-1 text-gray-500 text-sm">
+                <div className="mt-5 flex items-center gap-1 text-gray-500 text-sm">
                   <StarIcon size={15} />
                   <span className="">200+ reviews</span>
                 </div>
-
-                {/* Room Price Per Night */}
-                {/* <p className="text-[20px] font-medium text-gray-700">
-                  $450 /night
-                </p> */}
               </div>
             </div>
           );

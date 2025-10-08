@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { CupSoda, MapPin, MountainSnow, Rows4, StarIcon, Waves, Wifi } from "lucide-react";
+import { CupSoda, Loader2, MapPin, MountainSnow, Rows4, StarIcon, Waves, Wifi } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useFetchSpecificRoomQuery } from '@/features/api/roomApi';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useGetHotelByIdQuery } from '@/features/api/hotelApi';
+import { useIsAvailableRoomMutation } from '@/features/api/bookingApi';
+import { toast } from 'react-toastify';
 
 
 const roomAmenities = {
@@ -15,26 +17,73 @@ const roomAmenities = {
 }
 
 const RoomDetailPage = () => {
+  const navigate = useNavigate();
   const params = useParams();
   const { roomId, hotelId} = params;
   const [mainImage, setMainImage] = useState();
+
+  const [isAvailableForm, setIsAvailableForm] = useState({
+    checkInDate: "",
+    checkOutDate: "",
+    guest: ""
+  })
+
+  const { data, isLoading, isSuccess, isError, error } =
+    useFetchSpecificRoomQuery(roomId);
+
+  const {
+    data: hotelData,
+    isLoading: hotelIsLoading,
+    isSuccess: hotelSuccess,
+    isError: hotelError,
+  } = useGetHotelByIdQuery(hotelId);
+
+  const [
+    isAvailableRoom,
+    {
+      data: isAvailableRoomData,
+      isLoading: isAvailableRoomIsLoading,
+      isSuccess: isAvailableRoomIsSuccess,
+      isError: isAvailableRoomIsError,
+      error: isAvailableRoomError,
+    },
+  ] = useIsAvailableRoomMutation();
+
+  const handleIsAvailableForm = (e) =>{
+    const {name, value} = e.target;
+
+    setIsAvailableForm((prev)=>{
+      return {...prev, [name]: value};
+    })
+  }
+
+  const handleIsAvailableButton = async (e) =>{
+    e.preventDefault();
+    if(!isAvailableForm.checkInDate || !isAvailableForm.checkOutDate){
+      toast.error("ChekinDate and CheckOutDate are required");
+    }
+    await isAvailableRoom({hotelId, roomId, ...isAvailableForm});    // " ", " ", {}
+    // console.log(isAvailableRoomIsLoading, isAvailableRoomData);  // REDUX Store updates asynchronoulsy so, console.log arrives before the update. use useEffect()
+  }
 
   const focusImage = (img) =>{
     setMainImage(img);
   }
 
-  const { data, isLoading, isSuccess, isError, error } =
-    useFetchSpecificRoomQuery(roomId);
-
-  const {data: hotelData, isLoading: hotelIsLoading, isSuccess: hotelSuccess, isError: hotelError} = useGetHotelByIdQuery(hotelId);
-
-  // console.log(data?.room);
   const hotel = hotelData?.hotel;
   const room = data?.room;
   useEffect(()=>{
     setMainImage(room?.roomImages[0]);
   }, [room])
 
+  useEffect(() => {
+    if (isAvailableRoomData && isAvailableRoomIsSuccess) {
+      toast.success(isAvailableRoomData?.message || "Room is available");
+    }
+    if (isAvailableRoomIsError) {
+      toast.error(isAvailableRoomError?.data?.message || "Room is not available");
+    }
+  }, [isAvailableRoomIsSuccess, isAvailableRoomData, isAvailableRoomError]);
 
   if(isLoading){
     return <p className='mt-50'>Loading...</p>
@@ -81,37 +130,39 @@ const RoomDetailPage = () => {
               key={index}
               src={elm}
               alt="Room Image"
-              className={`w-full rounded-xl shadow-md object-cover cursor-pointer ${elm === mainImage ? "border border-blue-400" : ""}`}
+              className={`w-full rounded-xl shadow-md object-cover cursor-pointer ${
+                elm === mainImage ? "border border-blue-500" : ""
+              }`}
             />
           ))}
         </div>
       </div>
 
       {/* Room Highlights */}
-      <div className="flex flex-col items-center border md:flex-row md:justify-between mt-20 border-red-500">
-        <div className="flex flex-col items-center border-pink-500">
-          {room.roomDesc && (
-            <h1
-              className="text-3xl md:text-4xl"
-              dangerouslySetInnerHTML={{ __html: room.roomDesc }}
-            />
-          )}
+      <div className="mt-5 flex flex-col border-pink-500">
+        {room.roomDesc && (
+          <h1
+            className="border border-gray-300 w-[1200px] rounded-lg bg-[#F5F8FB] p-3 mt-5 shadow-sm"
+            dangerouslySetInnerHTML={{ __html: room.roomDesc }}
+          />
+        )}
+      </div>
 
-          {/* Bug */}
-          <div className="flex flex-wrap items-center mt-3 mb-6 gap-4 border border-green-600">
-            {room?.amenities.map((elm, index) => {
-              return (
-                <div
-                  className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-100"
-                  key={index}
-                >
-                  {roomAmenities[elm.toLowerCase()]}
-                  <p className="text-xs">{elm || "Free Wifi"}</p>
-                </div>
-              );
-            })}
-          </div>
+      <div className="mt-10 mb-6 gap-4 border-green-600 flex justify-between">
+        <div className="flex flex-wrap items-center gap-3">
+          {room?.amenities.map((elm, index) => {
+            return (
+              <div
+                className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-100"
+                key={index}
+              >
+                {roomAmenities[elm.toLowerCase()]}
+                <p className="text-xs">{elm || "Free Wifi"}</p>
+              </div>
+            );
+          })}
         </div>
+
         {/* Room Price */}
         <p className="text-2xl font-medium">${room?.pricePerNight} /night</p>
       </div>
@@ -132,6 +183,9 @@ const RoomDetailPage = () => {
               placeholder="Check-In"
               className="w-full rounded border border-gray-300 px-3 py-2 mt-1.5 outline-none"
               required
+              onChange={handleIsAvailableForm}
+              value={isAvailableForm.checkInDate}
+              name="checkInDate"
             />
           </div>
           <div className="w-px h-15 bg-gray-300/70 max-md:hidden"></div>
@@ -145,6 +199,9 @@ const RoomDetailPage = () => {
               placeholder="Check-Out"
               className="w-full rounded border border-gray-300 px-3 py-2 mt-1.5 outline-none"
               required
+              onChange={handleIsAvailableForm}
+              value={isAvailableForm.checkOutDate}
+              name="checkOutDate"
             />
           </div>
           <div className="w-px h-15 bg-gray-300/70 max-md:hidden"></div>
@@ -158,28 +215,58 @@ const RoomDetailPage = () => {
               placeholder="Guests"
               className="max-w-20 rounded border border-gray-300 px-3 py-2 mt-1.5 outline-none"
               required
+              onChange={handleIsAvailableForm}
+              value={isAvailableForm.guest}
+              name="guest"
             />
           </div>
         </div>
         <button
           type="submit"
           className="bg-[#615fff] hover:bg-primary-dull active:scale-95 transition-all text-white rounded-md max-md:w-full max-md:mt-6 md:px-25 py-3 md:py-4 text-base cursor-pointer"
+          onClick={handleIsAvailableButton}
         >
-          Check Availability
+          {isAvailableRoomIsLoading ? (
+            <>
+              <Loader2 className="animate-spin mr-2 h-4 w-4" /> Please wait
+            </>
+          ) : (
+            <>Check Availability</>
+          )}
         </button>
       </form>
 
       {/* Hosted By */}
-      <div className="flex flex-col items-start gap-4 mt-10">
+      <div className="flex items-center border-red-500 gap-4 mt-10 justify-between p-6">
         <div className="flex gap-4">
           <Avatar className="h-9 w-9">
-            <AvatarImage src={hotel?.owner?.profileImg || "https://github.com/shadcn.png"} alt="@shadcn" />
+            <AvatarImage
+              src={hotel?.owner?.profileImg || "https://github.com/shadcn.png"}
+              alt="@shadcn"
+            />
             <AvatarFallback className="text-lg">CN</AvatarFallback>
           </Avatar>
 
-          <div className="text-lg md:text-xl">
-            <p>Hosted by {hotel?.owner?.name.toLowerCase().split(" ").map((word)=> word.charAt(0).toUpperCase() + word.slice(1))}</p>
+          <div className="text-lg md:text-xl border-red-600 flex items-center justify-between">
+            <p>
+              Hosted by{" "}
+              {hotel?.owner?.name
+                .toLowerCase()
+                .split(" ")
+                .map((word) => word.charAt(0).toUpperCase() + word.slice(1))}
+            </p>
           </div>
+        </div>
+
+        <div className="border-red-500">
+          <button
+            className="bg-[#615fff] hover:bg-primary-dull active:scale-95 transition-all text-white rounded-md max-md:w-full max-md:mt-6 md:px-25 py-3 md:py-4 text-base cursor-pointer relative mr-6"
+            onClick={() =>
+              navigate(`/hotel/${hotelId}/room/${roomId}/reservation`)
+            }
+          >
+            Book Your Room
+          </button>
         </div>
       </div>
     </div>

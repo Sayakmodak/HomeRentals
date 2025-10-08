@@ -7,6 +7,7 @@ import dbConnection from "./dbConnection/db.js";
 import userRoute from "./routes/userRoutes.js";
 import hotelRoute from "./routes/hotelRoutes.js";
 import roomRoute from "./routes/roomRoutes.js";
+import bookingRoute from "./routes/bookingRoute.js";
 
 dotenv.config({});
 
@@ -18,6 +19,7 @@ const app = express();
 app.use(express.json());
 app.use(bodyParser.json()); // to support JSON bodies
 app.use(bodyParser.urlencoded({ extended: true })); // to support URL-encoded bodies
+app.use(express.urlencoded({ extended: true }));
 // load the cookie-parsing middleware
 app.use(cookieParser());
 app.use(
@@ -36,6 +38,7 @@ app.get("/", async (req, res) => {
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/hotel", hotelRoute);
 app.use("/api/v1/hotel", roomRoute);
+app.use("/api/v1/hotel", bookingRoute);
 
 app.listen(port, () => {
   console.log(`Server started at ${port}`);

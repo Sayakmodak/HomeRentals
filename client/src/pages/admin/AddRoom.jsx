@@ -26,6 +26,7 @@ const AddRoom = () => {
     description: "",
     roomCategory: "",
     pricePerNight: "",
+    capacity: "",
     amenities: [],
   });
   const [roomImages, setRoomImages] = useState([]);
@@ -63,7 +64,6 @@ const AddRoom = () => {
   // console.log("data is", specificRoomData?.room);
 
   const room = specificRoomData?.room;
-  // console.log(room.roomName);
 
   const amenities = [
     "Free Wifi",
@@ -80,6 +80,8 @@ const AddRoom = () => {
           ...prev,
           roomName: room.roomName,
           pricePerNight: room.pricePerNight,
+          description: room.roomDesc,
+          capacity: room.capacity,
           roomCategory: room.roomCategory,
           amenities: [...prev.amenities, ...room.amenities],
         };
@@ -112,6 +114,7 @@ const AddRoom = () => {
   };
 
 
+  // areas of improvement: make a single function for add and update room
   const handleOnClick = async () => {
     // console.log(addRoomData);
     const formData = new FormData();
@@ -119,6 +122,7 @@ const AddRoom = () => {
     formData.append("description", addRoomData.description);
     formData.append("roomCategory", addRoomData.roomCategory);
     formData.append("pricePerNight", addRoomData.pricePerNight);
+    formData.append("capacity", addRoomData.capacity);
 
     // append amenites one by one
     addRoomData.amenities.forEach((elm) => {
@@ -140,6 +144,8 @@ const AddRoom = () => {
     formData.append("description", addRoomData.description);
     formData.append("roomCategory", addRoomData.roomCategory);
     formData.append("pricePerNight", addRoomData.pricePerNight);
+    formData.append("capacity", addRoomData.capacity);
+
     addRoomData.amenities.forEach((elm)=>{
       formData.append("amenities", elm);
     })
@@ -149,7 +155,6 @@ const AddRoom = () => {
     })
     await updateRoom({roomId, formData});
   }
-
 
   useEffect(() => {
     if (addRoomDataInfo?.message || addRoomIsSuccess) {
@@ -171,6 +176,7 @@ const AddRoom = () => {
     }
   }, [updateRoomIsSuccess, updateRoomIsError]);
 
+
   if (specificRoomIsLoading) {
     return <>Loading...</>;
   }
@@ -178,11 +184,12 @@ const AddRoom = () => {
   return (
     <div className="ml-5">
       <form action="" encType="multipart/form-data">
-        <h1 className="font-semibold text-2xl mb-2">Add Room</h1>
+        <h1 className="font-semibold text-2xl mb-2">
+          {location.pathname.includes("update-room") ? "Update Room" : "Add Room"}
+        </h1>
         <p className="mb-2">
           Fill the details accurately and enhance the user experience.
         </p>
-
         <p className="mb-2 text-gray-500">Upload room images upto 4</p>
         <DragandDropContainer
           setPreviewImages={setPreviewImages}
@@ -204,7 +211,7 @@ const AddRoom = () => {
           })}
         </div>
       )}
-      
+
       {/* Room Name */}
       <div>
         <p className="mt-4 text-gray-500">Room Name</p>
@@ -221,7 +228,11 @@ const AddRoom = () => {
       {/* Description */}
       <div>
         <p className="mt-4 text-gray-500">Description</p>
-        <RichTextEditor addRoomData={addRoomData} setAddRoomData={setAddRoomData} type={"addRoom"}/>
+        <RichTextEditor
+          addRoomData={addRoomData}
+          setAddRoomData={setAddRoomData}
+          type={"addRoom"}
+        />
       </div>
 
       {/* Room type */}
@@ -257,6 +268,18 @@ const AddRoom = () => {
             onChange={handleOnChange}
           />
         </div>
+
+        {/* Capacity */}
+        <div>
+          <p className="mt-4 text-gray-800">Capacity of Guests</p>
+          <input
+            type="text"
+            className="border border-gray-300 mt-1 rounded p-2 w-24"
+            name="capacity"
+            value={addRoomData.capacity}
+            onChange={handleOnChange}
+          />
+        </div>
       </div>
 
       {/* Amenities */}
@@ -278,6 +301,8 @@ const AddRoom = () => {
           );
         })}
       </div>
+
+      {/* Button for add room and update room */}
       {location.pathname.includes("update-room") ? (
         <>
           <button

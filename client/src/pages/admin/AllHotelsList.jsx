@@ -109,7 +109,7 @@ const AllHotelsList = () => {
                     <td className="py-3 px-4 text-gray-700 border-t border-gray-300 max-sm:hidden">
                       {hotel?.hotelCategory || "Luxury"}
                     </td>
-                    <td className="py-3 px-5 text-gray-700 border-t border-gray-300 relative left-6">
+                    <td className="py-3 px-5 text-gray-700 border-t border-gray-300 relative left-1">
                       {hotel?.address || "Goa"}
                     </td>
                     <td className="py-3 px-4 text-gray-700 text-sm text-center border-t border-gray-300">

@@ -62,6 +62,9 @@ const EditHotel = () => {
           ...prev,
           hotelName: hotel.hotelName,
           hotelCategory: hotel.hotelCategory,
+          hotelSubtitle: hotel.hotelSubtitle,
+          description: hotel.hotelDesc,
+          amenities: [...prev.amenities, ...hotel.hotelAmenities]
         };
       });
     }

@@ -3,9 +3,11 @@ import homeJpg from "../assets/home.jpeg";
 import { Loader2, XIcon } from "lucide-react";
 import { useAddHotelMutation } from "@/features/api/hotelApi";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const RegisterHotelModal = ({ onClose }) => {
   const modalRef = useRef();
+  const navigate = useNavigate();
   const [registerHotel, setRegisterHotel] = useState({
     hotelName: "",
     contact: "",
@@ -49,7 +51,8 @@ const RegisterHotelModal = ({ onClose }) => {
 
   useEffect(()=>{
     if(data && isSuccess){
-      toast.success(data.message || "Hotel Registered");
+      toast.success(data.message || "Hotel has been registered");
+      navigate("/");
       onClose();
     }
     if(error){

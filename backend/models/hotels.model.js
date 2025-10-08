@@ -53,7 +53,7 @@ const hotels = new mongoose.Schema(
     },
     rooms: [
       {
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId, // [47134699516942211, 55822552585854, 225979789225662]
         ref: "Room",
       },
     ],

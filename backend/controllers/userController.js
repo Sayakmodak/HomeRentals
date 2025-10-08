@@ -19,7 +19,7 @@ export const register = async (req, res) => {
     }
 
     // if the user already there in the database
-    const isUser = await User.findOne({ email });
+    const isUser = await User.findOne({ email: email });
     if (isUser) {
       return res.status(401).json({
         success: false,

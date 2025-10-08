@@ -2,10 +2,6 @@ import mongoose from "mongoose";
 
 const room = new mongoose.Schema(
   {
-    // roomRef: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: "Hotels",
-    // },
     roomName: {
       type: String,
       required: true,
@@ -27,6 +23,9 @@ const room = new mongoose.Schema(
     pricePerNight: {
       type: String,
       required: true,
+    },
+    capacity: {
+      type: Number, // guest capacity
     },
   },
   { timestamps: true }

@@ -9,10 +9,10 @@ import { Provider } from "react-redux";
 import { SidebarProvider } from "./components/ui/sidebar";
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
+  // <StrictMode>
     <Provider store={store}>
         <ToastContainer />
         <App />
     </Provider>
-  </StrictMode>
+  // </StrictMode>
 );

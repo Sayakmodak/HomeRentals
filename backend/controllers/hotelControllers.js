@@ -28,7 +28,7 @@ export const addHotel = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      message: "Your Hotel Is Registered",
+      message: "Your hotel has been registered",
       hotel: hotel,
     });
   } catch (error) {
@@ -108,12 +108,21 @@ export const updateHotel = async (req, res) => {
       });
     }
 
-    const hotelImages = [];
-
-    for (let img of files) {
-      const hotelImage = await uploadMedia(img.path);
-      hotelImages.push(hotelImage.secure_url);
+    let hotelImages = [];
+    if (files && files.length > 0) {
+      for (let img of files) {
+        const hotelImage = await uploadMedia(img.path);
+        hotelImages.push(hotelImage.secure_url);
+      }
+    } else {
+      //keep the existing images
+      hotelImages = hotel.hotelImages;
     }
+
+    // push only unique amenities
+    // const updatedAmenity = hotel.hotelAmenities.filter(
+    //   (elm) => !amenities.includes(elm)
+    // );
 
     const updatedHotelInfo = {
       // same name must as the DB

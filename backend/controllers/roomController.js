@@ -5,10 +5,16 @@ import { uploadMedia } from "../Utils/cloudinary.js";
 export const addRoom = async (req, res) => {
   try {
     const roomImages = req.files; // this will be an array
-    // console.log("roomimages are", roomImages);
     const { hotelId } = req.params; // is an object always
 
-    const { roomName, roomCategory, pricePerNight, amenities } = req.body;
+    const {
+      roomName,
+      roomCategory,
+      description,
+      pricePerNight,
+      capacity,
+      amenities,
+    } = req.body;
     // console.log(roomCategory, pricePerNight, amenities);
 
     const hotel = await Hotels.findOne({ _id: hotelId });
@@ -37,6 +43,8 @@ export const addRoom = async (req, res) => {
       roomImages: roomImageURLs,
       roomName: roomName,
       roomCategory: roomCategory,
+      roomDesc: description,
+      capacity: +capacity,
       amenities: amenities,
       pricePerNight: pricePerNight,
     });
@@ -95,17 +103,16 @@ export const updateRoom = async (req, res) => {
   try {
     const { roomId } = req.params;
     const files = req.files;
-
-    const { roomName, description, roomCategory, pricePerNight, amenities } =
-      req.body;
-    // console.log(roomName, roomCategory, pricePerNight, amenities);
-
-    // push the files to the newImages array
-    const newImages = [];
-    for (let file of files) {
-      const uploadImage = await uploadMedia(file.path);
-      newImages.push(uploadImage.secure_url);
-    }
+    console.log("File Length is ", files.length);
+    const {
+      roomName,
+      description,
+      roomCategory,
+      pricePerNight,
+      capacity,
+      amenities,
+    } = req.body;
+    console.log(roomName, roomCategory, pricePerNight, amenities);
 
     const room = await Room.findById(roomId);
     if (!room) {
@@ -115,11 +122,33 @@ export const updateRoom = async (req, res) => {
       });
     }
 
+    // this function always sends the images to the new Images array and this array goes to the roomImages array, so when I do not upload any image to the array during update, it gets null or epmty. To get rid off this bug I have to put a validation to this function.
+
+    // push the files to the newImages array
+    let newImages = [];
+    if (files && files.length > 0) {
+      for (let file of files) {
+        const uploadImage = await uploadMedia(file.path);
+        newImages.push(uploadImage.secure_url);
+      }
+    } else {
+      // if the files are not present, keep the existing images
+      newImages = room.roomImages;
+    }
+
+    //  push only unique elements to the amenity array
+    // const updatedAmenity = room.amenities.filter(
+    //   (elm) => !amenities.includes(elm)
+    // );
+
+    // console.log(updatedAmenity);
+
     const updatedData = {
       roomName,
       roomDesc: description,
       roomCategory,
       pricePerNight,
+      capacity: +capacity,
       amenities,
       roomImages: newImages,
     };

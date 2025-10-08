@@ -26,7 +26,7 @@ const Hero = () => {
                     </svg>
                     <label htmlFor="checkIn">Check in</label>
                 </div>
-                <input id="checkIn" type="date" className=" rounded border border-gray-200 px-3 py-1.5 mt-1.5 text-sm outline-none" />
+                <input id="checkIn" type="date" className="rounded border border-gray-200 px-3 py-1.5 mt-1.5 text-sm outline-none" />
             </div>
 
             <div>
