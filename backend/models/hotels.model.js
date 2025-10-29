@@ -57,6 +57,10 @@ const hotels = new mongoose.Schema(
         ref: "Room",
       },
     ],
+    isFeatured: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );

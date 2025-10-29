@@ -153,3 +153,90 @@ export const updateHotel = async (req, res) => {
     });
   }
 };
+
+export const setAsFeatured = async (req, res) => {
+  try {
+    const { hotelId } = req.params;
+    const hotel = await Hotels.findById(hotelId);
+    if (!hotel) {
+      return res.status(404).json({
+        success: false,
+        message: "Could not find the hotel",
+      });
+    }
+
+    const setAsFeature = await Hotels.findByIdAndUpdate(
+      hotelId,
+      {
+        isFeatured: true,
+      },
+      { new: true }
+    );
+    // await Hotels.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Your Hotel has been marked as featured",
+      setAsFeature,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Some error occured, can not set as featured",
+    });
+  }
+};
+
+export const setAsUnFeatured = async (req, res) => {
+  try {
+    const { hotelId } = req.params;
+    const hotel = await Hotels.findById(hotelId);
+    if (!hotel) {
+      return res.status(404).json({
+        success: false,
+        message: "Could not find the hotel",
+      });
+    }
+
+    const setAsUnFeature = await Hotels.findByIdAndUpdate(
+      hotelId,
+      {
+        isFeatured: false,
+      },
+      { new: true }
+    );
+    //await Hotels.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Your Hotel has been marked as unfeatured",
+      setAsUnFeature,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Some error occured, can not set as unfeatured",
+    });
+  }
+};
+
+export const fetchFeaturedHotels = async (req, res) => {
+  try {
+    const featuredHotels = await Hotels.find({ isFeatured: true });
+    console.log(featuredHotels);
+
+    return res.status(200).json({
+      success: true,
+      featuredHotels,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message:
+        "Can not fetch featured hotels, some error occured while fetchig featured hotels",
+    });
+  }
+};

@@ -39,6 +39,27 @@ export const hotelApi = createApi({
         body: formData,
       }),
     }),
+
+    setAsFeatured: builder.mutation({
+      query: (hotelId) => ({
+        url: `/hotel/${hotelId}/setasfeature`, //  http://localhost:8080/api/v1/hotel/hotel/:hotelId/setasfeature
+        method: "POST",
+      }),
+    }),
+
+    setAsUnFeatured: builder.mutation({
+      query: (hotelId) => ({
+        url: `/hotel/${hotelId}/setasunfeature`, //  http://localhost:8080/api/v1/hotel/hotel/:hotelId/setasunfeature
+        method: "POST",
+      }),
+    }),
+
+    fetchFeaturedHotels: builder.query({
+      query: () => ({
+        url: `/hotel/featuredhotels`, //  http://localhost:8080/api/v1/hotel/hotel/featuredhotels
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -47,4 +68,7 @@ export const {
   useListHotelsQuery,
   useGetHotelByIdQuery,
   useUpdateHotelMutation,
+  useSetAsFeaturedMutation,
+  useSetAsUnFeaturedMutation,
+  useFetchFeaturedHotelsQuery,
 } = hotelApi;

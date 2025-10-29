@@ -1,31 +1,34 @@
 import { Button } from '@/components/ui/button'
-import { MapPin } from 'lucide-react'
+import { BedDouble, MapPin } from 'lucide-react'
 import React from 'react'
-import { useLocation } from 'react-router-dom';
 
-const SingleHotelCard = () => {
-  const location = useLocation();
-  // console.log(location.pathname);
+const SingleHotelCard = ({ featureHotel }) => {
+  console.log(featureHotel);
 
   return (
     <div className="bg-white [box-shadow:0_4px_12px_-5px_rgba(0,0,0,0.4)] w-64 h-72 rounded-lg overflow-hidden mx-auto mt-4 border-red-500">
       <div className="">
         <img
-          src="https://readymadeui.com/Imagination.webp"
-          className="w-full h-full object-cover"
+          src={
+            featureHotel.hotelImages[0] ||
+            "https://readymadeui.com/Imagination.webp"
+          }
+          className="w-full h-[170px] object-cover"
           alt="Card image"
         />
       </div>
 
-      <div className="p-3 border border-green-500">
-        <h3 className="text-gray-700 text-[16px] font-semibold">Hotel Name</h3>
+      <div className="p-3 border-green-500">
+        <h3 className="text-gray-700 text-[16px] font-semibold">
+          {featureHotel.hotelName || "Hotel Name"}
+        </h3>
         <p className="mt-0.5 text-sm text-slate-500 leading-relaxed flex items-center">
           <MapPin size={15} />
-          Goa
+          {featureHotel.address || "Goa"}
         </p>
         <div className="flex items-center justify-between border-orange-500 mt-2">
-          <p>
-            $450 <span className="text-[#888a8c] text-[13px]">/night</span>
+          <p className="flex justify-center items-center text-slate-700 border-red-500 gap-2 text-sm">
+            <BedDouble size={15} /> {featureHotel.hotelCategory || "450"}
           </p>
           <Button
             type="button"

@@ -1,8 +1,11 @@
 import express from "express";
 import {
   addHotel,
+  fetchFeaturedHotels,
   getHotelById,
   listHotels,
+  setAsFeatured,
+  setAsUnFeatured,
   updateHotel,
 } from "../controllers/hotelControllers.js";
 import { isAuthenticated } from "../middleware/isAuthenticated.js";
@@ -12,6 +15,7 @@ const route = express.Router();
 
 route.post("/addhotel", isAuthenticated, addHotel);
 route.get("/list-hotels", isAuthenticated, listHotels);
+route.get("/hotel/featuredhotels", isAuthenticated, fetchFeaturedHotels);
 route.get("/hotel/:hotelId", isAuthenticated, getHotelById);
 route.put(
   "/update-hotel/:hotelId",
@@ -19,4 +23,7 @@ route.put(
   isAuthenticated,
   updateHotel
 );
+route.post("/hotel/:hotelId/setasfeature", isAuthenticated, setAsFeatured);
+route.post("/hotel/:hotelId/setasunfeature", isAuthenticated, setAsUnFeatured);
+
 export default route;

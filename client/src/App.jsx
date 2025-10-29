@@ -17,6 +17,7 @@ import EditHotel from "./pages/admin/EditHotel";
 import { PrimeReactProvider } from "primereact/api";
 import RoomDetailPage from "./pages/RoomDetailPage";
 import ReservationPage from "./pages/ReservationPage";
+import MyBooking from "./pages/MyBooking";
 
 
 const router = createBrowserRouter([
@@ -52,6 +53,10 @@ const router = createBrowserRouter([
       {
         path: "/hotel/:hotelId/room/:roomId/reservation",
         element: <ReservationPage />,
+      },
+      {
+        path: "/mybookings",
+        element: <MyBooking />,
       },
     ],
   },

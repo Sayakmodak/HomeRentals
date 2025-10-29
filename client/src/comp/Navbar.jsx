@@ -66,17 +66,19 @@ export default function Navbar() {
         isScrolled
           ? "bg-white/80 shadow-md backdrop-blur-lg py-3 md:py-4"
           : "py-4 md:py-6"
-      } ${!isHome ? "bg-indigo-500" : ""}`}
+      } ${!isHome ? "bg-indigo-500 text-white" : ""}`}
     >
       {/* Logo */}
       <Link to="/" className="flex items-center gap-1 text-lg">
         <HomeIcon
-          className={`${
-            isScrolled && isHome ? "text-gray-700" : "text-white"
-          } w-6 h-6`}
+          className={`${isScrolled && isHome ? "text-gray-700" : ""} ${
+            isScrolled && !isHome ? "text-gray-700" : ""
+          } ${!isScrolled && isHome ? "text-white" : ""} w-6 h-6`}
         />
         <h2
-          className={`${isScrolled && isHome ? "text-gray-700" : "text-white"}`}
+          className={`${isScrolled && isHome ? "text-gray-700" : ""} ${
+            isScrolled && !isHome ? "text-gray-700" : ""
+          } ${!isScrolled && isHome ? "text-white" : ""}`}
         >
           HomeRentals
         </h2>
@@ -89,23 +91,24 @@ export default function Navbar() {
             key={i}
             to={elm.path}
             className={`group flex flex-col items-center justify-center gap-0.5 text-lg ${
-              isScrolled && isHome ? "text-gray-700" : "text-white"
+              isScrolled && isHome ? "text-gray-700" : ""
+            } ${!isScrolled && isHome ? "text-white" : ""} ${
+              isScrolled && !isHome ? "text-gray-700" : ""
             }`}
           >
             {elm.name}
             <div
               className={`${
-                isScrolled && isHome ? "bg-gray-700" : "bg-white"
+                isScrolled && isHome ? "bg-gray-700" : ""
               } h-0.5 w-0 group-hover:w-full transition-all duration-300`}
             />
           </Link>
         ))}
         <button
           className={`text-lg border rounded-full px-1.5 ${
-            isScrolled && isHome
-              ? "text-gray-700 border-gray-500"
-              : "text-white"
-          }`}
+            !isScrolled && isHome ? "text-white border-white" : ""
+          } ${isScrolled && isHome ? "text-blue-800 border-blue-800" : ""} 
+            ${isScrolled && !isHome ? "text-gray-700 border-gray-800" : ""}`}
           onClick={() => setModalOpen(true)}
         >
           List Your Hotel

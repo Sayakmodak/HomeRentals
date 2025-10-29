@@ -3,10 +3,10 @@ import { MapPin } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
-const RoomCard = ({roomId, roomName, address, pricePerNight}) => {
+const RoomCard = ({ roomId, roomName, roomImage, address, pricePerNight }) => {
   const navigate = useNavigate();
   const params = useParams();
-  const {hotelId} = params;
+  const { hotelId } = params;
   // console.log(roomId, roomName, address, pricePerNight);
 
   // const {data, isLoading, isSuccess, isError, error} = useFetchSpecificRoomQuery(roomId);
@@ -15,8 +15,8 @@ const RoomCard = ({roomId, roomName, address, pricePerNight}) => {
     <div className="bg-white [box-shadow:0_4px_12px_-5px_rgba(0,0,0,0.4)] w-64 h-72 rounded-lg overflow-hidden mx-auto mt-4 border-red-500">
       <div className="">
         <img
-          src="https://readymadeui.com/Imagination.webp"
-          className="w-full h-full object-cover"
+          src={roomImage || "https://readymadeui.com/Imagination.webp"}
+          className="w-full object-cover border-red-500 h-[170px]"
           alt="Card image"
         />
       </div>
@@ -31,7 +31,8 @@ const RoomCard = ({roomId, roomName, address, pricePerNight}) => {
         </p>
         <div className="flex items-center justify-between border-orange-500 mt-2">
           <p>
-            ${pricePerNight || "599"} <span className="text-[#888a8c] text-[13px]">/night</span>
+            ${pricePerNight || "599"}{" "}
+            <span className="text-[#888a8c] text-[13px]">/night</span>
           </p>
           <Button
             type="button"
@@ -45,6 +46,6 @@ const RoomCard = ({roomId, roomName, address, pricePerNight}) => {
       </div>
     </div>
   );
-}
+};
 
 export default RoomCard

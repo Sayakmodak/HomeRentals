@@ -226,6 +226,7 @@ const HotelDetail = () => {
                   key={index}
                   roomId={elm._id}
                   roomName={elm.roomName}
+                  roomImage={elm.roomImages[0]}
                   address={hotel.address}
                   pricePerNight={elm.pricePerNight}
                 />

@@ -106,6 +106,7 @@ export const isAvailable = async (req, res) => {
   }
 };
 
+// TODO
 export const showOnlyAvailableRooms = async (req, res) => {
   try {
     const {} = req.body;

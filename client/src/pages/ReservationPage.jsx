@@ -65,6 +65,7 @@ const ReservationPage = () => {
   }
   console.log(roomData);
   const room = roomData?.room;
+  
   return (
     <div className="px-4 md:py-35 md:px-16 lg:px-24 xl:px-32">
       <h2 className="mb-5 text-3xl font-semibold">
