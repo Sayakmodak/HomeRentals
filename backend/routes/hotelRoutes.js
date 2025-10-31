@@ -4,6 +4,7 @@ import {
   fetchFeaturedHotels,
   getHotelById,
   listHotels,
+  searchHotel,
   setAsFeatured,
   setAsUnFeatured,
   updateHotel,
@@ -13,6 +14,7 @@ import upload from "./../Utils/multer.js";
 
 const route = express.Router();
 
+route.get("/search-by-category", isAuthenticated, searchHotel);
 route.post("/addhotel", isAuthenticated, addHotel);
 route.get("/list-hotels", isAuthenticated, listHotels);
 route.get("/hotel/featuredhotels", isAuthenticated, fetchFeaturedHotels);

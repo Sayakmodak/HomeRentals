@@ -9,13 +9,13 @@ const HotelCards = () => {
   const location = useLocation();
 
   const {data, isLoading, isSuccess, isError, error} = useFetchFeaturedHotelsQuery();
-  const featuredHotels = data?.featuredHotels;
-  console.log(featuredHotels);
 
   if(isLoading){
     return <p>Loading...</p>
   }
 
+  const featuredHotels = data?.featuredHotels;
+  // console.log(featuredHotels);
   return (
     <div className="bg-[#f5f8fb] pt-20 flex items-center flex-col pb-10 border-green-400">
       <div className="text-center mb-5">
@@ -26,7 +26,7 @@ const HotelCards = () => {
         </p>
       </div>
       <div className="flex items-center mb-5 p-2 gap-5 border-red-500">
-        {featuredHotels.map((hotelCard, i) => {
+        {featuredHotels?.map((hotelCard, i) => {
           return <SingleHotelCard key={i} featureHotel={hotelCard}/>
         })}
       </div>

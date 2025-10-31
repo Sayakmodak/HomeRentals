@@ -1,9 +1,10 @@
 import { Button } from '@/components/ui/button'
 import { BedDouble, MapPin } from 'lucide-react'
 import React from 'react'
+import { useNavigate } from 'react-router-dom';
 
 const SingleHotelCard = ({ featureHotel }) => {
-  console.log(featureHotel);
+  const navigate = useNavigate();
 
   return (
     <div className="bg-white [box-shadow:0_4px_12px_-5px_rgba(0,0,0,0.4)] w-64 h-72 rounded-lg overflow-hidden mx-auto mt-4 border-red-500">
@@ -34,6 +35,7 @@ const SingleHotelCard = ({ featureHotel }) => {
             type="button"
             variant="outline"
             className="px-5 py-2.5 rounded-lg text-gray-700 font-medium tracking-wider cursor-pointer text-[13px]"
+            onClick={() => navigate(`hotel/${featureHotel._id}`)}
           >
             View Details
           </Button>

@@ -240,3 +240,31 @@ export const fetchFeaturedHotels = async (req, res) => {
     });
   }
 };
+
+export const searchHotel = async (req, res) => {
+  try {
+    const { categories } = req.query; // req.query always returns string
+    // console.log("coming from BE", categories, typeof categories);
+    // coming from BE Luxury Stays,Business Hotels string
+
+    const categoryList = categories ? categories.split(",") : [];
+
+    const regexCategory = categoryList.map((elm) => new RegExp(elm, "i"));
+
+    const searchHotelByCategory = await Hotels.find({
+      hotelCategory: { $in: regexCategory },
+    });
+
+    return res.status(200).json({
+      success: true,
+      searchHotelByCategory,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message:
+        "Can not search hotels, some error occured while searching hotels",
+    });
+  }
+};

@@ -60,6 +60,22 @@ export const hotelApi = createApi({
         method: "GET",
       }),
     }),
+
+    searchHotels: builder.query({
+      // array
+      query: (categories) => {
+        let url = `/search-by-category`;
+
+        if (categories && categories.length > 0) {
+          const query = categories.map(encodeURIComponent).join(","); // string-> "Luxury Hotels, Botique Hotels"
+          url += `?categories=${query}`;
+        }
+        return {
+          url: url,
+          method: "GET",
+        };
+      },
+    }),
   }),
 });
 
@@ -71,4 +87,5 @@ export const {
   useSetAsFeaturedMutation,
   useSetAsUnFeaturedMutation,
   useFetchFeaturedHotelsQuery,
+  useSearchHotelsQuery,
 } = hotelApi;

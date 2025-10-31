@@ -52,7 +52,7 @@ const ReservationPage = () => {
   useEffect(()=>{
     if(isSuccess){
       toast.success(data.message || "Your room has been confirmed");
-      console.log(data);
+      // console.log(data);
     }
     if(isError || error){
       // console.log(error);
