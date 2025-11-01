@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import  home  from '../assets/home.jpeg';
-import { CupSoda, Loader2, Rows4, Wifi, Waves, MountainSnow} from "lucide-react";
+import { CupSoda, Loader2, Rows4, Wifi, Waves, MountainSnow, Dot} from "lucide-react";
 import { useBookRoomMutation } from '@/features/api/bookingApi';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useFetchSpecificRoomQuery } from '@/features/api/roomApi';
+import { useGetHotelByIdQuery } from '@/features/api/hotelApi';
 
 
 const amenityIcons = {
@@ -27,6 +28,8 @@ const ReservationPage = () => {
 
   const [formData, {data, isLoading, isSuccess, isError, error}] = useBookRoomMutation();
   const {data: roomData, isLoading: roomIsLoading, isSuccess: roomIsSuccess, isError: roomIsError, error: roomError} = useFetchSpecificRoomQuery(roomId);
+
+  const {data: hotelData, isLoading: hotelIsLoading, isSuccess: hotelIsSuccess} = useGetHotelByIdQuery(hotelId);
 
   const handleOnChange = (e) => {
     const {name, value} = e.target;
@@ -66,6 +69,16 @@ const ReservationPage = () => {
   console.log(roomData);
   const room = roomData?.room;
   
+  if (hotelIsLoading) {
+    return (
+      <>
+        <p>Loading...</p>
+      </>
+    );
+  }
+
+  const hotel = hotelData?.hotel;
+
   return (
     <div className="px-4 md:py-35 md:px-16 lg:px-24 xl:px-32">
       <h2 className="mb-5 text-3xl font-semibold">
@@ -74,7 +87,7 @@ const ReservationPage = () => {
 
       <div className="flex gap-5">
         {/* Customer Details */}
-        <div className="border border-gray-500 w-[1800px] rounded-2xl h-[600px]">
+        <div className="border border-gray-500 w-[800px] rounded-2xl h-[600px]">
           <div className="border-blue-800 m-2 p-3 rounded-lg bg-[#F3F4F6]">
             <h2 className="font-medium text-lg">
               Who's the lead guest, Your details
@@ -125,16 +138,17 @@ const ReservationPage = () => {
             <h2 className="font-medium text-lg mb-2">Property Highlights</h2>
 
             <div className="flex items-center gap-2">
-              {
-                room?.amenities.map((elm, index)=>{
-                  return (
-                    <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-100" key={index}>
-                      {amenityIcons[elm.toLowerCase()]}
-                      <p>{elm}</p>
-                    </div>
-                  );
-                })
-              }
+              {room?.amenities.map((elm, index) => {
+                return (
+                  <div
+                    className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-100"
+                    key={index}
+                  >
+                    {amenityIcons[elm.toLowerCase()]}
+                    <p>{elm}</p>
+                  </div>
+                );
+              })}
             </div>
           </div>
 
@@ -157,8 +171,23 @@ const ReservationPage = () => {
           </div>
         </div>
 
-        <div className="border border-gray-700 rounded-2xl overflow-hidden">
-          <img src={home} alt="" />
+        {/* Booking property details */}
+        <div className="border border-gray-700 rounded-2xl overflow-hidden w-[500px]">
+          <img src={hotel?.hotelImages[1]} alt="" className="w-full" />
+
+          <h3 className="text-center font-semibold mt-10 text-2xl">
+            Hotel at a glance
+          </h3>
+          <ul className='mt-5'>
+            {hotel?.hotelAmenities.map((amenity)=> {
+              return (
+                <div className="flex items-center gap-2 text-xl text-gray-800 ml-20">
+                  <Dot /> <li className="">{amenity}</li>
+                </div>
+              );
+            })}
+            
+          </ul>
         </div>
       </div>
     </div>
