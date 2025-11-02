@@ -9,6 +9,10 @@ const booking = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId, // who booked
       ref: "User",
     },
+    hotel: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Hotel",
+    },
     room: {
       type: mongoose.Schema.Types.ObjectId, // which room has been booked
       ref: "Room",

@@ -9,6 +9,8 @@ import { isAuthenticated } from "./../middleware/isAuthenticated.js";
 
 const route = express.Router();
 
+route.get("/room/:roomId", isAuthenticated, fetchSpecificRoom); // http://localhost:8080/api/v1/hotel/room/68bf2b72cce908ea7bfb52d2
+
 // ${hotelId}/room/addroom
 route.post(
   "/:hotelId/room/addroom",
@@ -16,8 +18,6 @@ route.post(
   upload.array("roomImages", 4),
   addRoom
 ); // /api/v1/hotel/:hotelId/room/addroom
-
-route.get("/room/:roomId", isAuthenticated, fetchSpecificRoom); // http://localhost:8080/api/v1/hotel/room/68bf2b72cce908ea7bfb52d2
 
 route.put(
   "/room/:roomId",

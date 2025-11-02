@@ -21,7 +21,7 @@ const UserProfile = () => {
   // console.log(data);
 
   const {user} = data || {};
-  console.log(user);
+//   console.log(user);
 
 
   const getFileInfo = (e)=>{

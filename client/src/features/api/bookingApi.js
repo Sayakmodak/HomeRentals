@@ -25,7 +25,18 @@ export const bookingApi = createApi({
         body: formData,
       }),
     }),
+
+    showMyBoookings: builder.query({
+      query: (userId) => ({
+        url: `${userId}/mybookings`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const { useBookRoomMutation, useIsAvailableRoomMutation } = bookingApi;
+export const {
+  useBookRoomMutation,
+  useIsAvailableRoomMutation,
+  useShowMyBoookingsQuery,
+} = bookingApi;

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,6 +18,7 @@ import { useLogoutUserMutation } from "@/features/api/authApi";
 import { toast } from "react-toastify";
 
 export default function Navbar() {
+  const navigate = useNavigate();
   const location = useLocation();
   // Detect if on home page
   const isHome = location.pathname === "/";
@@ -140,6 +141,9 @@ export default function Navbar() {
                 </Link>
                 <DropdownMenuItem onClick={handleLogOut}>
                   Logout
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={()=> navigate(`/mybookings/${user?._id}`)}>
+                  My Bookings
                 </DropdownMenuItem>
               </DropdownMenuGroup>
               {user?.role === "seller" && (

@@ -80,6 +80,7 @@ export const fetchSpecificRoom = async (req, res) => {
     }
 
     const room = await Room.findOne({ _id: roomId });
+    // const room = await Room.findById(roomId);
     if (!room) {
       return res.status(404).json({
         success: false,
